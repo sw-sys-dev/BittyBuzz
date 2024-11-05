@@ -66,6 +66,10 @@ export default StyleSheet.create({
     fontWeight: '600',
     marginBottom: 12,
   },
+  cardContent: {
+    padding: 8,
+    justifyContent: 'space-between',
+  },
   card: {
     backgroundColor: '#f9f9f9',
     borderRadius: 10,
@@ -83,22 +87,22 @@ export default StyleSheet.create({
     fontWeight: '500',
     marginBottom: 4,
   },
-  cardAction: {
-    fontSize: 16,
-    color: '#007BFF',
+  horizontalScrollView: {
+    marginVertical: 10,
+    flexDirection: 'row',
   },
   categoryScrollView: {
     marginVertical: 10,
   },
   categoryItem: {
-    backgroundColor: '#FFF9C4', // Default light yellow background
-    borderRadius: 15,
-    paddingVertical: 8,
+    backgroundColor: '#FFF9C4', 
+    paddingVertical: 10,
     paddingHorizontal: 16,
-    marginRight: 8,
+    marginRight: 20,
+    borderRadius:10
   },
   selectedCategoryItem: {
-    backgroundColor: '#FFD700', // Change to a different color when selected
+    backgroundColor: '#FFD700',
   },
   categoryText: {
     fontSize: 16,
