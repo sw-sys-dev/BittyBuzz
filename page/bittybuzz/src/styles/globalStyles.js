@@ -22,9 +22,11 @@ export default StyleSheet.create({
     marginLeft: 8,
   },
   title: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: 'bold',
-    marginBottom: 8,
+    color: '#333',
+    textAlign: 'center',
+    marginBottom:10
   },
   searchContainer: {
     flexDirection: 'row',
@@ -32,7 +34,6 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 8,
-    padding: 8,
     marginBottom: 16,
   },
   searchInput: {
