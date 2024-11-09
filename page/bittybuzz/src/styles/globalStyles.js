@@ -2,133 +2,110 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    padding: 16,
-  },
-  header: {
-    marginBottom: 20,
-  },
-  profileImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginLeft: 10,
-  },
-  arrowIcon: {
-    width: 24,
-    height: 24,
-    marginLeft: 8,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#333',
-    textAlign: 'center',
-    marginBottom:10
-  },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    marginBottom: 16,
-  },
-  searchInput: {
-    flex: 1,
-    fontSize: 16,
-  },
-  icon: {
-    width: 24,
-    height: 24,
-    marginLeft: 8,
-  },
-  subText: {
-    fontSize: 18,
-    color: 'black',
-    fontWeight: '900',
-    marginBottom: 4,
-  },
-  rowContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  progressImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginVertical: 16,
-  },
-  sectionTitle: {
-    fontSize: 22,
-    fontWeight: '600',
-    marginBottom: 12,
-  },
-  cardContent: {
-    padding: 8,
-    justifyContent: 'space-between',
-  },
-  card: {
-    backgroundColor: '#f9f9f9',
-    borderRadius: 10,
-    padding: 12,
-    marginBottom: 16,
-  },
-  cardImage: {
-    width: '100%',
-    height: 150,
-    borderRadius: 8,
-    marginBottom: 8,
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: '500',
-    marginBottom: 4,
-  },
-  horizontalScrollView: {
-    marginVertical: 10,
-    flexDirection: 'row',
-  },
-  categoryScrollView: {
-    marginVertical: 10,
-  },
-  categoryItem: {
-    backgroundColor: '#FFF9C4', 
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    marginRight: 20,
-    borderRadius:10
-  },
-  selectedCategoryItem: {
-    backgroundColor: '#FFD700',
-  },
-  categoryText: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  card: {
-    backgroundColor: '#f9f9f9',
-    borderRadius: 10,
-    padding: 12,
-    marginBottom: 16,
-  },
-  cardImage: {
-    width: '100%',
-    height: 150,
-    borderRadius: 8,
-    marginBottom: 8,
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: '500',
-    marginBottom: 4,
-  },
-  cardAction: {
-    fontSize: 16,
-    color: '#007BFF',
-  },
-
+    container: {
+      flex: 1,
+      backgroundColor: '#fff',
+      paddingHorizontal: 16,
+    },
+    header: {
+      paddingVertical: 20,
+      alignItems: 'center',
+    },
+    title: {
+      fontSize: 28,
+      fontWeight: 'bold',
+      color: '#ff99cc',
+      marginBottom: 10,
+    },
+    searchContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      width: '100%',
+      backgroundColor: '#f1f1f1',
+      borderRadius: 8,
+      marginBottom: 15,
+    },
+    searchInput: {
+      flex: 1,
+      marginRight: 10,
+    },
+    icon: {
+      width: 20,
+      height: 20,
+      tintColor: '#555',
+    },
+    welcomeText: {
+      fontSize: 16,
+      color: '#333',
+    },
+    summaryPrompt: {
+      fontSize: 14,
+      color: '#777',
+      marginTop: 5,
+    },
+    sectionTitle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      color: '#333',
+      marginTop: 20,
+      marginBottom: 10,
+    },
+    horizontalScrollView: {
+      paddingBottom: 10,
+    },
+    card: {
+      backgroundColor: '#f9f9f9',
+      borderRadius: 10,
+      padding: 10,
+      marginRight: 15,
+      width: 200,
+      shadowColor: '#000',
+      shadowOpacity: 0.1,
+      shadowOffset: { width: 0, height: 2 },
+      shadowRadius: 5,
+      elevation: 3,
+    },
+    cardImage: {
+      width: '100%',
+      height: 100,
+      borderRadius: 8,
+      marginBottom: 10,
+    },
+    cardTitle: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: '#333',
+    },
+    cardDescription: {
+      fontSize: 14,
+      color: '#555',
+      marginBottom: 5,
+    },
+    cardAction: {
+      fontSize: 14,
+      color: '#ff99cc',
+    },
+    categoryScrollView: {
+      marginVertical: 10,
+    },
+    categoryItem: {
+      paddingVertical: 8,
+      paddingHorizontal: 15,
+      borderRadius: 20,
+      backgroundColor: '#f1f1f1',
+      marginRight: 10,
+    },
+    selectedCategoryItem: {
+      backgroundColor: '#ff99cc',
+    },
+    categoryText: {
+      fontSize: 14,
+      color: '#333',
+    },
+    selectedCategoryText: {
+      color: '#fff', 
+    },
+    newsList: {
+      paddingVertical: 10,
+    },
   });
