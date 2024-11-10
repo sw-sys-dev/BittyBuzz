@@ -34,12 +34,10 @@ export default function MainScreen() {
       });
   }, []); // 컴포넌트 마운트 시 한 번만 실행
 
-      .catch(error => console.error('Error fetching news:', error));
-  }, [selectedCategory]); // selectedCategory가 변경될 때마다 호출
   const handleReadMore = (news) => {
     navigation.navigate('NewsDetail', {
       title: news.title,
-      image: news.imageUrl,
+      image: news.imageUrl, // Assuming image URL is available here
       description: news.description,
       pubDate: news.pubDate, // Pass the publication date if available
       content: news.content
@@ -60,7 +58,7 @@ export default function MainScreen() {
       </View>
 
       {/* Recent News */}
-      <Text style={[styles.content, { fontWeight: 'bold' }]}>Recent News</Text>
+      <Text style={styles.sectionTitle}>Recent News</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
         {recentNews.map((news, index) => (
           <View key={index} style={styles.card}>
@@ -74,7 +72,7 @@ export default function MainScreen() {
       </ScrollView>
 
       {/* News Categories */}
-      <Text style={[styles.content, { fontWeight: 'bold' }]}>Categories</Text>
+      <Text style={styles.sectionTitle}>Categories</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScrollView}>
         {categories.map((category) => (
           <TouchableOpacity
@@ -106,6 +104,7 @@ export default function MainScreen() {
       </ScrollView>
 
       {/* Category News - Horizontal Scroll */}
+      <Text style={styles.sectionTitle}>{selectedCategory} News</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
         {categoryNews.map((news, index) => (
           <View key={index} style={styles.card}>
