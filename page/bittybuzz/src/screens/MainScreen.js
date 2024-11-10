@@ -3,37 +3,47 @@ import { View, Text, Image, ScrollView, TextInput, TouchableOpacity } from 'reac
 import { useNavigation } from '@react-navigation/native';
 import styles from '../styles/globalStyles';
 
-const recentNews = [
-  { title: 'Recent News 1: Market Hits Record...', image: require('../assets/images/sample-news1.jpg'), description: '어쩌구 저쩌구' },
-  { title: 'Recent News 2: Policy Changes Announced', image: require('../assets/images/sample-news2.png'), description: '이러쿵 저쩌구' },
-  { title: 'Recent News 3: Technology Advancements', image: require('../assets/images/sample-news3.png'), description: '블라블라 저쩌구' },
-];
-
 export default function MainScreen() {
-  const [selectedCategory, setSelectedCategory] = useState('정치');
-  const [categoryNews, setCategoryNews] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('정치');  // '정치' 카테고리를 기본값으로 설정
+  const [categoryNews, setCategoryNews] = useState([]);  // 카테고리 뉴스 상태
+  const [recentNews, setRecentNews] = useState([]);     // 최신 뉴스 상태
   const categories = ['정치', '시사', '경제', '스포츠', '기술', '건강'];
   const navigation = useNavigation();
 
+  // 컴포넌트가 마운트될 때 실행 (초기 로드)
   useEffect(() => {
-    // 선택된 카테고리에 따른 뉴스 데이터를 백엔드에서 가져오기
-    fetch(`http://본인:3000/search/news?query=${selectedCategory}`)
+    // 모든 뉴스를 가져와서 최신 뉴스 5개를 추출하기
+    fetch('http://192.0.0.2:3000/search/news')
+      .then(response => response.json())  // JSON 응답을 파싱
+      .then(data => {
+        const sortedNews = data.items.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+        setRecentNews(sortedNews.slice(0, 5)); // 최신 5개의 뉴스만 저장
+      })
+      .catch(error => {
+        console.error('Error fetching news:', error);
+      });
+
+    // 기본적으로 "정치" 카테고리 뉴스 로드
+    fetch('http://192.0.0.2:3000/search/news?query=정치')
       .then(response => response.json())
       .then(data => {
-        setCategoryNews(data.items); // 불러온 데이터를 상태에 저장
+        setCategoryNews(data.items); // 정치 뉴스 데이터를 categoryNews에 저장
       })
-      .catch(error => console.error('Error fetching news:', error));
-  }, [selectedCategory]); // selectedCategory가 변경될 때마다 호출
+      .catch(error => {
+        console.error('Error fetching category news:', error);
+      });
+  }, []); // 컴포넌트 마운트 시 한 번만 실행
 
   const handleReadMore = (news) => {
     navigation.navigate('NewsDetail', {
       title: news.title,
       image: news.imageUrl, // Assuming image URL is available here
       description: news.description,
-      category: selectedCategory, // Pass the selectedCategory as category
       pubDate: news.pubDate, // Pass the publication date if available
+      content: news.content
     });
   };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -48,11 +58,11 @@ export default function MainScreen() {
       </View>
 
       {/* Recent News */}
-      <Text style={styles.sectionTitle}>Recent News</Text>
+      <Text style={[styles.content, { fontWeight: 'bold' }]}>Recent News</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
         {recentNews.map((news, index) => (
           <View key={index} style={styles.card}>
-            <Image source={news.image} style={styles.cardImage} />
+            <Image source={{ uri: news.imageUrl }} style={styles.cardImage} />
             <Text style={styles.cardTitle}>{news.title}</Text>
             <TouchableOpacity onPress={() => handleReadMore(news)}>
               <Text style={styles.cardAction}>Start reading →</Text>
@@ -62,7 +72,7 @@ export default function MainScreen() {
       </ScrollView>
 
       {/* News Categories */}
-      <Text style={styles.sectionTitle}>Categories</Text>
+      <Text style={[styles.content, { fontWeight: 'bold' }]}>Categories</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScrollView}>
         {categories.map((category) => (
           <TouchableOpacity
@@ -71,7 +81,15 @@ export default function MainScreen() {
               styles.categoryItem,
               selectedCategory === category && styles.selectedCategoryItem,
             ]}
-            onPress={() => setSelectedCategory(category)}
+            onPress={() => {
+              setSelectedCategory(category);  // 선택된 카테고리 업데이트
+              fetch(`http://192.0.0.2:3000/search/news?query=${category}`)
+                .then(response => response.json())
+                .then(data => {
+                  setCategoryNews(data.items); // 선택된 카테고리 뉴스 데이터
+                })
+                .catch(error => console.error('Error fetching category news:', error));
+            }}
           >
             <Text
               style={[
@@ -86,10 +104,10 @@ export default function MainScreen() {
       </ScrollView>
 
       {/* Category News - Horizontal Scroll */}
-      <Text style={styles.sectionTitle}>{selectedCategory} News</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
         {categoryNews.map((news, index) => (
           <View key={index} style={styles.card}>
+            {news.imageUrl && <Image source={{ uri: news.imageUrl }} style={styles.cardImage} />}
             <Text style={styles.cardTitle}>{news.title}</Text>
             <Text style={styles.cardDescription}>{news.description}</Text>
             <TouchableOpacity onPress={() => handleReadMore(news)}>

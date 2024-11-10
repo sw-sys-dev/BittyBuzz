@@ -4,13 +4,13 @@ import NewsDetailStyles from '../styles/NewsDetailStyles';
 import { useNavigation } from '@react-navigation/native';
 
 export default function NewsDetail({ route }) {
-  const { title, image, description, category, pubDate } = route.params;
+  const { title, image, description, category, pubDate, content } = route.params;
   const [relatedArticles, setRelatedArticles] = useState([]);
   const navigation = useNavigation();
 
   // Fetch related articles based on the category
   useEffect(() => {
-    fetch(`http://본인:3000/search/news?query=${category}`)
+    fetch(`http://192.0.0.2:3000/search/news?query=${category}`)
       .then(response => response.json())
       .then(data => setRelatedArticles(data.items))
       .catch(error => console.error('Error fetching related articles:', error));
@@ -25,7 +25,11 @@ export default function NewsDetail({ route }) {
         <Text style={NewsDetailStyles.date}>{new Date(pubDate).toLocaleDateString()}</Text>
       </View>
       <Text style={NewsDetailStyles.title}>{title}</Text>
-      <Text style={NewsDetailStyles.content}>{description}</Text>
+      <ScrollView style={NewsDetailStyles.container}>
+        <Text style={NewsDetailStyles.content}>
+          {content ? content : '본문을 불러올 수 없습니다.'}
+        </Text>
+      </ScrollView>
 
       {/* Separator */}
       <View style={NewsDetailStyles.separator} />
@@ -40,8 +44,9 @@ export default function NewsDetail({ route }) {
             title: article.title,
             image: article.imageUrl, // Ensure imageUrl is part of the response data
             description: article.description,
-            category: article.category,
+            category: category,  // Keep the same category for related articles
             pubDate: article.pubDate,
+            content: article.content // Passing content as well
           })}
         >
           <Text style={NewsDetailStyles.relatedTitleText}>{article.title}</Text>
