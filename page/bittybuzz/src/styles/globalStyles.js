@@ -83,7 +83,7 @@ export default StyleSheet.create({
     },
     cardAction: {
       fontSize: 14,
-      color: '#ff99cc',
+      color: '#0174DF',
     },
     categoryScrollView: {
       marginVertical: 10,
@@ -96,7 +96,7 @@ export default StyleSheet.create({
       marginRight: 10,
     },
     selectedCategoryItem: {
-      backgroundColor: '#000000',
+      backgroundColor: '#0174DF',
     },
     categoryText: {
       fontSize: 14,

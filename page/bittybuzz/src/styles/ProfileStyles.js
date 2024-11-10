@@ -42,7 +42,7 @@ export default StyleSheet.create({
         fontSize: 16,
       },
       highlightedText: {
-        color: '#ff99cc',
+        color: '#0174DF',
         fontWeight: 'bold',
       },
       menuSection: {

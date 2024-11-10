@@ -34,10 +34,12 @@ export default function MainScreen() {
       });
   }, []); // 컴포넌트 마운트 시 한 번만 실행
 
+      .catch(error => console.error('Error fetching news:', error));
+  }, [selectedCategory]); // selectedCategory가 변경될 때마다 호출
   const handleReadMore = (news) => {
     navigation.navigate('NewsDetail', {
       title: news.title,
-      image: news.imageUrl, // Assuming image URL is available here
+      image: news.imageUrl,
       description: news.description,
       pubDate: news.pubDate, // Pass the publication date if available
       content: news.content
