@@ -1,23 +1,50 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import { Card } from 'react-native-paper';
-import { useToast } from 'react-native-toast-notifications';
+import { useToast } from 'react-native-toast-notifications'; // useToast 임포트
+import TcpSocket from 'react-native-tcp-socket'; // TCP 소켓 라이브러리 임포트
 import styles from '../styles/SummaryScreenStyles';
+
 export default function SummaryScreen() {
   const [inputContent, setInputContent] = useState('');
   const [summary, setSummary] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('text');
-  const [copied, setCopied] = useState(false);
-  const toast = useToast();
+  const toast = useToast(); // useToast 훅 사용
 
   const handleSummarization = async () => {
     setIsLoading(true);
-    setTimeout(() => {
-      setSummary(`Here's a summary of your ${activeTab === 'text' ? 'text' : 'video'}: ${inputContent.slice(0, 100)}...`);
+  
+    // TCP 연결 설정
+    const client = TcpSocket.createConnection({
+      host: '0.tcp.jp.ngrok.io', // ngrok TCP 서버 주소
+      port: 13767, // ngrok 포트
+    }, () => {
+      console.log('Connected to server');
+  
+      // 서버에 텍스트 전송
+      const data = { text: inputContent };
+      client.write(JSON.stringify(data)); // JSON 형태로 텍스트 전송
+    });
+  
+    // 서버 응답 처리
+    client.on('data', (data) => {
+      console.log('Received data from server:', data.toString());
+      setSummary(data.toString()); // 서버 응답 요약 결과 설정
       setIsLoading(false);
-      toast.show("Summary Generated", { type: "success", description: "Your content has been successfully summarized." });
-    }, 2000);
+      client.end(); // 연결 종료
+    });
+  
+    // 오류 처리
+    client.on('error', (error) => {
+      console.error("TCP Error:", error);
+      toast.show("Error Generating Summary", { type: "danger", description: "An error occurred while generating the summary." });
+      setIsLoading(false);
+    });
+  
+    client.on('close', () => {
+      console.log('Connection closed');
+    });
   };
 
   return (
