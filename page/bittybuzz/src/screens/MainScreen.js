@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ScrollView, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Image, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../styles/globalStyles';
+
 const recentNews = [
   { title: 'Recent News 1: Market Hits Record...', image: require('../assets/images/sample-news1.jpg'), description: '어쩌구 저쩌구' },
   { title: 'Recent News 2: Policy Changes Announced', image: require('../assets/images/sample-news2.png'), description: '이러쿵 저쩌구' },
@@ -15,20 +16,24 @@ export default function MainScreen() {
   const navigation = useNavigation();
 
   useEffect(() => {
+    // 선택된 카테고리에 따른 뉴스 데이터를 백엔드에서 가져오기
     fetch(`http://본인:3000/search/news?query=${selectedCategory}`)
       .then(response => response.json())
-      .then(data => setCategoryNews(data.items))
+      .then(data => {
+        setCategoryNews(data.items); // 불러온 데이터를 상태에 저장
+      })
       .catch(error => console.error('Error fetching news:', error));
-  }, [selectedCategory]);
+  }, [selectedCategory]); // selectedCategory가 변경될 때마다 호출
 
   const handleReadMore = (news) => {
     navigation.navigate('NewsDetail', {
       title: news.title,
-      image: news.image,
+      image: news.imageUrl, // Assuming image URL is available here
       description: news.description,
+      category: selectedCategory, // Pass the selectedCategory as category
+      pubDate: news.pubDate, // Pass the publication date if available
     });
   };
-
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -80,9 +85,9 @@ export default function MainScreen() {
         ))}
       </ScrollView>
 
-      {/* Category News */}
+      {/* Category News - Horizontal Scroll */}
       <Text style={styles.sectionTitle}>{selectedCategory} News</Text>
-      <View style={styles.newsList}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
         {categoryNews.map((news, index) => (
           <View key={index} style={styles.card}>
             <Text style={styles.cardTitle}>{news.title}</Text>
@@ -92,8 +97,7 @@ export default function MainScreen() {
             </TouchableOpacity>
           </View>
         ))}
-      </View>
+      </ScrollView>
     </ScrollView>
   );
 }
-

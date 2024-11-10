@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: '#FFFFFF',
       paddingHorizontal: 16,
     },
     header: {
@@ -14,7 +14,7 @@ export default StyleSheet.create({
     title: {
       fontSize: 28,
       fontWeight: 'bold',
-      color: '#ff99cc',
+      color: '#000000',
       marginBottom: 10,
     },
     searchContainer: {
@@ -36,17 +36,17 @@ export default StyleSheet.create({
     },
     welcomeText: {
       fontSize: 16,
-      color: '#333',
+      color: '#000000',
     },
     summaryPrompt: {
       fontSize: 14,
-      color: '#777',
+      color: '#000000',
       marginTop: 5,
     },
     sectionTitle: {
       fontSize: 18,
       fontWeight: 'bold',
-      color: '#333',
+      color: '#FFFFFF',
       marginTop: 20,
       marginBottom: 10,
     },
@@ -96,7 +96,7 @@ export default StyleSheet.create({
       marginRight: 10,
     },
     selectedCategoryItem: {
-      backgroundColor: '#ff99cc',
+      backgroundColor: '#000000',
     },
     categoryText: {
       fontSize: 14,

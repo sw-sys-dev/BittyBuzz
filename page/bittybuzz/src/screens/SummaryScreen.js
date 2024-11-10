@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator, Clipboard } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { Card } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 
@@ -20,12 +20,6 @@ export default function SummaryScreen() {
     }, 2000);
   };
 
-  const handleCopy = () => {
-    Clipboard.setString(summary);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-    toast.show("Copied to Clipboard", { type: "success", description: "The summary has been copied to your clipboard." });
-  };
 
   const handleShare = () => {
     toast.show("Sharing Summary", { type: "info", description: "Your summary is being shared." });
@@ -33,15 +27,15 @@ export default function SummaryScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Text and Video Summarization</Text>
+      <Text style={styles.title}>Summarize Content</Text>
 
       {/* Tabs */}
       <View style={styles.tabs}>
         <TouchableOpacity onPress={() => setActiveTab('text')} style={[styles.tab, activeTab === 'text' && styles.activeTab]}>
-          <Text style={styles.tabText}>Text</Text>
+          <Text style={[styles.tabText, activeTab === 'text' && styles.activeTabText]}>Text</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setActiveTab('video')} style={[styles.tab, activeTab === 'video' && styles.activeTab]}>
-          <Text style={styles.tabText}>Video</Text>
+          <Text style={[styles.tabText, activeTab === 'video' && styles.activeTabText]}>Video</Text>
         </TouchableOpacity>
       </View>
 
@@ -49,7 +43,7 @@ export default function SummaryScreen() {
       <Card style={styles.card}>
         <View style={styles.cardHeader}>
           <Text style={styles.cardTitle}>{activeTab === 'text' ? 'Summarize Text' : 'Summarize Video'}</Text>
-          <Text style={styles.cardDescription}>{activeTab === 'text' ? 'Enter your text below to get a concise summary.' : 'Enter a video URL to get a concise summary.'}</Text>
+          <Text style={styles.cardDescription}>{activeTab === 'text' ? 'Enter text to summarize.' : 'Enter video URL to summarize.'}</Text>
         </View>
         <View style={styles.cardContent}>
           <TextInput
@@ -60,7 +54,7 @@ export default function SummaryScreen() {
             multiline={activeTab === 'text'}
           />
         </View>
-        <TouchableOpacity onPress={handleSummarization} disabled={isLoading || !inputContent} style={styles.button}>
+        <TouchableOpacity onPress={handleSummarization} disabled={isLoading || !inputContent} style={[styles.button, isLoading || !inputContent ? styles.buttonDisabled : null]}>
           {isLoading ? (
             <>
               <ActivityIndicator size="small" color="#fff" style={styles.loader} />
@@ -77,18 +71,10 @@ export default function SummaryScreen() {
         <Card style={styles.summaryCard}>
           <View style={styles.cardHeader}>
             <Text style={styles.cardTitle}>Summary</Text>
-            <Text style={styles.cardDescription}>Your generated summary appears here.</Text>
+            <Text style={styles.cardDescription}>Your generated summary is below.</Text>
           </View>
           <View style={styles.cardContent}>
             <Text style={styles.summaryText}>{summary}</Text>
-          </View>
-          <View style={styles.summaryActions}>
-            <TouchableOpacity onPress={handleCopy} style={styles.actionButton}>
-              <Text style={styles.actionButtonText}>{copied ? 'Copied!' : 'Copy'}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleShare} style={styles.actionButton}>
-              <Text style={styles.actionButtonText}>Share Summary</Text>
-            </TouchableOpacity>
           </View>
         </Card>
       ) : null}
@@ -98,50 +84,62 @@ export default function SummaryScreen() {
 
 const styles = StyleSheet.create({
   container: {
+    flex:1,
     padding: 16,
-    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 16,
+    marginBottom: 20,
+    color: '#000000',
     textAlign: 'center',
   },
   tabs: {
     flexDirection: 'row',
-    marginBottom: 16,
+    backgroundColor: '#e0e0e0',
+    borderRadius: 20,
+    marginBottom: 20,
+    overflow: 'hidden',
   },
   tab: {
     flex: 1,
-    padding: 12,
+    paddingVertical: 12,
     alignItems: 'center',
-    borderBottomWidth: 2,
-    borderBottomColor: '#ddd',
   },
   activeTab: {
-    borderBottomColor: '#4a90e2',
+    backgroundColor: '#000000',
   },
   tabText: {
     fontSize: 16,
+    color: '#333',
+  },
+  activeTabText: {
+    color: '#fff',
     fontWeight: 'bold',
   },
   card: {
-    width: '100%',
     padding: 16,
-    marginBottom: 16,
-    borderRadius: 8,
-    elevation: 2,
+    borderRadius: 20,
+    backgroundColor: '#fff',
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    elevation: 3,
   },
   cardHeader: {
     marginBottom: 10,
   },
   cardTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
+    color: '#333',
   },
   cardDescription: {
     fontSize: 14,
-    color: '#666',
+    color: '#777',
   },
   cardContent: {
     marginBottom: 10,
@@ -149,45 +147,44 @@ const styles = StyleSheet.create({
   textArea: {
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: 5,
+    borderRadius: 10,
     padding: 10,
     minHeight: 100,
     textAlignVertical: 'top',
+    backgroundColor: '#f9f9f9',
   },
   button: {
-    backgroundColor: '#4a90e2',
-    paddingVertical: 12,
-    borderRadius: 5,
+    backgroundColor: '#000000',
+    paddingVertical: 15,
+    borderRadius: 10,
     alignItems: 'center',
+    marginTop: 10,
+  },
+  buttonDisabled: {
+    backgroundColor: '#000000',
   },
   buttonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight: 'bold',
+    margin:10
   },
   loader: {
     marginRight: 5,
   },
   summaryCard: {
-    width: '100%',
     padding: 16,
-    borderRadius: 8,
-    elevation: 2,
+    borderRadius: 20,
+    backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    elevation: 3,
   },
   summaryText: {
     fontSize: 16,
-    marginBottom: 10,
-  },
-  summaryActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  actionButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 5,
-    backgroundColor: '#ddd',
-  },
-  actionButtonText: {
     color: '#333',
+    marginBottom: 10,
   },
 });

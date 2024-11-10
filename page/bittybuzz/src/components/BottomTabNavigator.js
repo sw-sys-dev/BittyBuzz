@@ -14,7 +14,7 @@ export default function BottomTabNavigator() {
       screenOptions={({ route }) => ({
         // eslint-disable-next-line react/no-unstable-nested-components
 
-        tabBarActiveTintColor: '#FFB100',
+        tabBarActiveTintColor: '#ff99cc',
         tabBarInactiveTintColor: 'gray',
       })}
     >
