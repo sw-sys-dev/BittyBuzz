@@ -1,8 +1,8 @@
-// NewsDetail.js
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../styles/NewsDetailStyles';
+
 export default function NewsDetail({ route }) {
   const { title, image, description, category, pubDate, content } = route.params;
   const [relatedArticles, setRelatedArticles] = useState([]);
@@ -33,9 +33,9 @@ export default function NewsDetail({ route }) {
         <Text style={styles.category}>{category}</Text>
         <Text style={styles.date}>{new Date(pubDate).toLocaleDateString()}</Text>
       </View>
-      <Text style={NewsDetailStyles.title}>{title}</Text>
-      <ScrollView style={NewsDetailStyles.container}>
-        <Text style={NewsDetailStyles.content}>
+      <Text style={styles.title}>{title}</Text>
+      <ScrollView style={styles.container}>
+        <Text style={styles.content}>
           {content ? content : '본문을 불러올 수 없습니다.'}
         </Text>
       </ScrollView>
@@ -65,4 +65,3 @@ export default function NewsDetail({ route }) {
     </ScrollView>
   );
 }
-

@@ -58,7 +58,7 @@ export default function MainScreen() {
       </View>
 
       {/* Recent News */}
-      <Text style={styles.sectionTitle}>Recent News</Text>
+      <Text style={[styles.content, { fontWeight: 'bold' }]}>Recent News</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
         {recentNews.map((news, index) => (
           <View key={index} style={styles.card}>
@@ -72,7 +72,7 @@ export default function MainScreen() {
       </ScrollView>
 
       {/* News Categories */}
-      <Text style={styles.sectionTitle}>Categories</Text>
+      <Text style={[styles.content, { fontWeight: 'bold' }]}>Categories</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScrollView}>
         {categories.map((category) => (
           <TouchableOpacity
@@ -104,7 +104,6 @@ export default function MainScreen() {
       </ScrollView>
 
       {/* Category News - Horizontal Scroll */}
-      <Text style={styles.sectionTitle}>{selectedCategory} News</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
         {categoryNews.map((news, index) => (
           <View key={index} style={styles.card}>
