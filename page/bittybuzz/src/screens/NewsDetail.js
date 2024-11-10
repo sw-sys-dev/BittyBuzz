@@ -10,7 +10,7 @@ export default function NewsDetail({ route }) {
 
   // Fetch related articles based on the category
   useEffect(() => {
-    fetch(`http://192.0.0.2:3000/search/news?query=${category}`)
+    fetch(`http://192.168.45.214:3000/search/news?query=${category}`)
       .then(response => response.json())
       .then(data => setRelatedArticles(data.items))
       .catch(error => console.error('Error fetching related articles:', error));

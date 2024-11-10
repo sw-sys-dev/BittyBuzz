@@ -83,7 +83,7 @@ export default function MainScreen() {
             ]}
             onPress={() => {
               setSelectedCategory(category);  // 선택된 카테고리 업데이트
-              fetch(`http://192.0.0.2:3000/search/news?query=${category}`)
+              fetch(`http://192.168.45.214:3000/search/news?query=${category}`)
                 .then(response => response.json())
                 .then(data => {
                   setCategoryNews(data.items); // 선택된 카테고리 뉴스 데이터
