@@ -61,7 +61,7 @@ const handleSignIn = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ff99cc', // Pink background for the top
+    backgroundColor: '#0174DF', // Pink background for the top
   },
   topContainer: {
     flex: 1,
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '100%',
-    backgroundColor: '#ff99cc',
+    backgroundColor: '#0174DF',
     paddingVertical: 15,
     borderRadius: 8,
     alignItems: 'center',
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   toggleText: {
-    color: '#ff99cc',
+    color: '#0174DF',
     marginTop: 10,
     fontSize: 14,
   },

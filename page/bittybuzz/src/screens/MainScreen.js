@@ -24,14 +24,14 @@ export default function MainScreen() {
       })
       .catch(error => console.error('Error fetching news:', error));
   }, [selectedCategory]); // selectedCategory가 변경될 때마다 호출
-
   const handleReadMore = (news) => {
     navigation.navigate('NewsDetail', {
       title: news.title,
-      image: news.imageUrl, // Assuming image URL is available here
+      image: news.imageUrl,
       description: news.description,
-      category: selectedCategory, // Pass the selectedCategory as category
-      pubDate: news.pubDate, // Pass the publication date if available
+      category: selectedCategory,
+      pubDate: news.pubDate,
+      originallink: news.originallink, // Ensure the original link is passed
     });
   };
   return (

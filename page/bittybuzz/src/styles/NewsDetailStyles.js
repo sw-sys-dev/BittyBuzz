@@ -55,4 +55,17 @@ export default StyleSheet.create({
     fontSize: 14,
     color: '#666',
   },
+  linkButton: {
+    backgroundColor: '#0174DF',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginVertical: 10,
+    alignItems: 'center',
+  },
+  linkButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
