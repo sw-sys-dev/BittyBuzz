@@ -68,4 +68,16 @@ export default StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  summarizeButton: {
+    backgroundColor: '#4CAF50',
+    padding: 10,
+    borderRadius: 5,
+    marginVertical: 10,
+    alignItems: 'center',
+  },
+  summarizeButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
