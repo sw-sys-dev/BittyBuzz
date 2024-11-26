@@ -51,7 +51,7 @@ export default function SummaryScreen() {
           toast.show('Image selection canceled', { type: 'warning' });
         } else if (response.errorMessage) {
           toast.show(`Error: ${response.errorMessage}`, { type: 'danger' });
-        } else {
+        } else if (response.assets && response.assets.length > 0) {
           const uri = response.assets[0].uri; // 이미지 URI 가져오기
           setSelectedImage(uri);
           toast.show('Image uploaded successfully', { type: 'success' });
