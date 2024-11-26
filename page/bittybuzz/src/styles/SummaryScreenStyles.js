@@ -1,109 +1,99 @@
 import { StyleSheet } from 'react-native';
 
 const SummaryScreenStyles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+  },
   container: {
-    flex:1,
-    padding: 16,
-    backgroundColor: '#FFFFFF',
+    flexGrow: 1,
+    padding: 20,
+  },
+  titleContainer: {
+    marginTop: 300,
+    marginBottom: 20,
+    alignItems: 'center',
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#000000',
+    color: '#fff',
     textAlign: 'center',
+    textTransform: 'uppercase',
   },
   tabs: {
     flexDirection: 'row',
-    backgroundColor: '#e0e0e0',
-    borderRadius: 20,
+    width: '100%',
     marginBottom: 20,
-    overflow: 'hidden',
   },
   tab: {
     flex: 1,
     paddingVertical: 12,
+    backgroundColor: '#fff',
     alignItems: 'center',
+    borderRadius: 20,
+    marginHorizontal: 5,
   },
   activeTab: {
-    backgroundColor: '#000000',
+    backgroundColor: '#FFD700',
   },
   tabText: {
     fontSize: 16,
     color: '#333',
   },
   activeTabText: {
-    color: '#fff',
     fontWeight: 'bold',
+    color: '#000',
   },
-  card: {
-    padding: 16,
+  inputContainer: {
+    width: '100%',
+    marginBottom: 20,
+  },
+  input: {
+    width: '100%',
+    padding: 15,
     borderRadius: 20,
     backgroundColor: '#fff',
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  cardHeader: {
-    marginBottom: 10,
-  },
-  cardTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 16,
     color: '#333',
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 8,
+    elevation: 2,
   },
-  cardDescription: {
-    fontSize: 14,
-    color: '#777',
-  },
-  cardContent: {
-    marginBottom: 10,
-  },
-  textArea: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 10,
-    padding: 10,
-    minHeight: 100,
-    textAlignVertical: 'top',
-    backgroundColor: '#f9f9f9',
-  },
-  button: {
-    backgroundColor: '#0174DF',
+  actionButton: {
+    backgroundColor: '#1E90FF',
     paddingVertical: 15,
-    borderRadius: 10,
+    borderRadius: 20,
     alignItems: 'center',
-    marginTop: 10,
+    width: '100%',
   },
-  buttonDisabled: {
-    backgroundColor: '#e0e0e0',
+  disabledButton: {
+    backgroundColor: '#87CEEB',
   },
   buttonText: {
-    color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
-    margin:10
+    color: '#fff',
   },
-  loader: {
-    marginRight: 5,
-  },
-  summaryCard: {
-    padding: 16,
-    borderRadius: 20,
+  summaryContainer: {
+    marginTop: 20,
+    padding: 20,
     backgroundColor: '#fff',
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
-    elevation: 3,
+    borderRadius: 20,
+    width: '100%',
+    alignItems: 'center',
+  },
+  summaryTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
   summaryText: {
     fontSize: 16,
     color: '#333',
-    marginBottom: 10,
   },
 });
 
