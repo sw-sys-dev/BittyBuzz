@@ -9,26 +9,29 @@ import {
   ImageBackground,
   Image,
 } from 'react-native';
-import { launchImageLibrary } from 'react-native-image-picker'; // Import image picker
-import { useToast } from 'react-native-toast-notifications';
-import styles from '../styles/SummaryScreenStyles';
+import { launchImageLibrary } from 'react-native-image-picker'; // 갤러리 접근을 위한 라이브러리
+import { useToast } from 'react-native-toast-notifications'; // Toast 알림
+import styles from '../styles/SummaryScreenStyles'; // 스타일 import
 
 export default function SummaryScreen() {
   const [inputContent, setInputContent] = useState('');
   const [summary, setSummary] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('text');
-  const [selectedImage, setSelectedImage] = useState(null); // Store selected image
+  const [selectedImage, setSelectedImage] = useState(null); // 선택한 이미지 상태
   const toast = useToast();
 
   const handleSummarization = async () => {
     setIsLoading(true);
     setTimeout(() => {
-      setSummary(
-        `Here's a summary of your ${
-          activeTab === 'text' ? 'text' : activeTab === 'video' ? 'video' : 'image'
-        }: ${inputContent.slice(0, 100)}...`
-      );
+      const generatedSummary =
+        activeTab === 'text'
+          ? `Text Summary: ${inputContent.slice(0, 100)}...`
+          : activeTab === 'video'
+          ? 'Video Summary: This is a placeholder for video summary...'
+          : 'Image Summary: This is a placeholder for image summary...';
+
+      setSummary(generatedSummary);
       setIsLoading(false);
       toast.show('Summary Generated', {
         type: 'success',
@@ -40,8 +43,8 @@ export default function SummaryScreen() {
   const handleImageSelection = () => {
     launchImageLibrary(
       {
-        mediaType: 'photo',
-        quality: 1,
+        mediaType: 'photo', // 사진만 선택 가능
+        quality: 1, // 고화질
       },
       (response) => {
         if (response.didCancel) {
@@ -49,7 +52,7 @@ export default function SummaryScreen() {
         } else if (response.errorMessage) {
           toast.show(`Error: ${response.errorMessage}`, { type: 'danger' });
         } else {
-          const uri = response.assets[0].uri;
+          const uri = response.assets[0].uri; // 이미지 URI 가져오기
           setSelectedImage(uri);
           toast.show('Image uploaded successfully', { type: 'success' });
         }
@@ -59,7 +62,7 @@ export default function SummaryScreen() {
 
   return (
     <ImageBackground
-      source={require('../assets/images/sumback.png')} // Replace with your uploaded background image
+      source={require('../assets/images/sumback.png')}
       style={styles.backgroundImage}
     >
       <ScrollView contentContainerStyle={styles.container}>
@@ -141,7 +144,7 @@ export default function SummaryScreen() {
                 ? 'Summarize Text'
                 : activeTab === 'video'
                 ? 'Summarize Video'
-                : 'Upload Image'}
+                : 'Summarize Image'}
             </Text>
           )}
         </TouchableOpacity>
