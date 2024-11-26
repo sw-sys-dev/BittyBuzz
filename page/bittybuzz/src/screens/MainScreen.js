@@ -1,38 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ScrollView, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../styles/globalStyles';
 
 export default function MainScreen() {
-  const [selectedCategory, setSelectedCategory] = useState('정치');  // '정치' 카테고리를 기본값으로 설정
-  const [categoryNews, setCategoryNews] = useState([]);  // 카테고리 뉴스 상태
-  const [recentNews, setRecentNews] = useState([]);     // 최신 뉴스 상태
+  const [selectedCategory, setSelectedCategory] = useState('정치');
+  const [categoryNews, setCategoryNews] = useState([]);
+  const [recentNews, setRecentNews] = useState([]);
+  const [loadingRecentNews, setLoadingRecentNews] = useState(true);
+  const [loadingCategoryNews, setLoadingCategoryNews] = useState(true);
   const categories = ['정치', '시사', '경제', '스포츠', '기술', '건강'];
   const navigation = useNavigation();
+  const defaultImage = require('../assets/images/instead.jpg'); // 대체 이미지 경로
 
-  // 컴포넌트가 마운트될 때 실행 (초기 로드)
   useEffect(() => {
-    // 모든 뉴스를 가져와서 최신 뉴스 5개를 추출하기
-    fetch('http://192.0.0.2:3000/search/news')
-      .then(response => response.json())  // JSON 응답을 파싱
-      .then(data => {
-        const sortedNews = data.items.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
-        setRecentNews(sortedNews.slice(0, 5)); // 최신 5개의 뉴스만 저장
-      })
-      .catch(error => {
-        console.error('Error fetching news:', error);
-      });
-
-    // 기본적으로 "정치" 카테고리 뉴스 로드
-    fetch('http://192.0.0.2:3000/search/news?query=정치')
+    fetch('http://192.168.45.214:3000/search/news')
       .then(response => response.json())
       .then(data => {
-        setCategoryNews(data.items); // 정치 뉴스 데이터를 categoryNews에 저장
+        const sortedNews = data.items.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+        setRecentNews(sortedNews.slice(0, 5));
       })
-      .catch(error => {
-        console.error('Error fetching category news:', error);
-      });
-  }, []); // 컴포넌트 마운트 시 한 번만 실행
+      .catch(error => console.error('Error fetching recent news:', error))
+      .finally(() => setLoadingRecentNews(false));
+  }, []);
+
+  useEffect(() => {
+    setLoadingCategoryNews(true);
+    fetch(`http://192.168.45.214:3000/search/news?query=${selectedCategory}`)
+      .then(response => response.json())
+      .then(data => setCategoryNews(data.items))
+      .catch(error => console.error('Error fetching category news:', error))
+      .finally(() => setLoadingCategoryNews(false));
+  }, [selectedCategory]);
 
   const handleReadMore = (news) => {
     navigation.navigate('NewsDetail', {
@@ -42,6 +41,10 @@ export default function MainScreen() {
       pubDate: news.pubDate,
       content: news.content
     });
+  };
+
+  const handleImageError = (e) => {
+    e.target.src = defaultImage; // 이미지 로딩 실패 시 대체 이미지 설정
   };
 
   return (
@@ -60,17 +63,28 @@ export default function MainScreen() {
 
       {/* Recent News */}
       <Text style={[styles.content, { fontWeight: 'bold' }]}>Recent News</Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
-        {recentNews.map((news, index) => (
-          <View key={index} style={styles.card}>
-            <Image source={{ uri: news.imageUrl }} style={styles.cardImage} />
-            <Text style={styles.cardTitle}>{news.title}</Text>
-            <TouchableOpacity onPress={() => handleReadMore(news)}>
-              <Text style={styles.cardAction}>Start reading →</Text>
-            </TouchableOpacity>
-          </View>
-        ))}
-      </ScrollView>
+      {loadingRecentNews ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#2196F3" />
+          <Text style={styles.loadingText}>Fetching the latest updates...</Text>
+        </View>
+      ) : (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
+          {recentNews.map((news, index) => (
+            <View key={index} style={styles.card}>
+              <Image 
+                source={{ uri: news.imageUrl }} 
+                style={styles.cardImage} 
+                onError={handleImageError}  // 이미지 오류 발생 시 대체 이미지로 변경
+              />
+              <Text style={styles.cardTitle}>{news.title}</Text>
+              <TouchableOpacity onPress={() => handleReadMore(news)}>
+                <Text style={styles.cardAction}>Start reading →</Text>
+              </TouchableOpacity>
+            </View>
+          ))}
+        </ScrollView>
+      )}
 
       {/* News Categories */}
       <Text style={[styles.content, { fontWeight: 'bold' }]}>Categories</Text>
@@ -82,15 +96,7 @@ export default function MainScreen() {
               styles.categoryItem,
               selectedCategory === category && styles.selectedCategoryItem,
             ]}
-            onPress={() => {
-              setSelectedCategory(category);  // 선택된 카테고리 업데이트
-              fetch(`http://192.0.0.2:3000/search/news?query=${category}`)
-                .then(response => response.json())
-                .then(data => {
-                  setCategoryNews(data.items); // 선택된 카테고리 뉴스 데이터
-                })
-                .catch(error => console.error('Error fetching category news:', error));
-            }}
+            onPress={() => setSelectedCategory(category)}
           >
             <Text
               style={[
@@ -104,19 +110,34 @@ export default function MainScreen() {
         ))}
       </ScrollView>
 
-      {/* Category News - Horizontal Scroll */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
-        {categoryNews.map((news, index) => (
-          <View key={index} style={styles.card}>
-            {news.imageUrl && <Image source={{ uri: news.imageUrl }} style={styles.cardImage} />}
-            <Text style={styles.cardTitle}>{news.title}</Text>
-            <Text style={styles.cardDescription}>{news.description}</Text>
-            <TouchableOpacity onPress={() => handleReadMore(news)}>
-              <Text style={styles.cardAction}>Start reading →</Text>
-            </TouchableOpacity>
-          </View>
-        ))}
-      </ScrollView>
+      {/* Category News */}
+      {loadingCategoryNews ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#2196F3" />
+          <Text style={styles.loadingText}>Loading {selectedCategory} news...</Text>
+        </View>
+      ) : (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
+          {categoryNews.map((news, index) => (
+            <View key={index} style={styles.card}>
+              {news.imageUrl ? (
+                <Image 
+                  source={{ uri: news.imageUrl }} 
+                  style={styles.cardImage} 
+                  onError={handleImageError}  // 이미지 오류 발생 시 대체 이미지로 변경
+                />
+              ) : (
+                <Image source={defaultImage} style={styles.cardImage} />
+              )}
+              <Text style={styles.cardTitle}>{news.title}</Text>
+              <Text style={styles.cardDescription}>{news.description}</Text>
+              <TouchableOpacity onPress={() => handleReadMore(news)}>
+                <Text style={styles.cardAction}>Start reading →</Text>
+              </TouchableOpacity>
+            </View>
+          ))}
+        </ScrollView>
+      )}
     </ScrollView>
   );
 }

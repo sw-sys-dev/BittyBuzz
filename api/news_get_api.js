@@ -87,5 +87,5 @@ app.get('/search/news', async function (req, res) {
 });
 
 app.listen(3000, '0.0.0.0', function () {
-  console.log('http://127.0.0.1:3000/search/news?query=삼성 app listening on port 3000!');
+  console.log('listening on port 3000!');
 });
