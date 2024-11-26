@@ -7,25 +7,27 @@ import {
   ScrollView,
   ActivityIndicator,
   ImageBackground,
+  Image,
 } from 'react-native';
+import { launchImageLibrary } from 'react-native-image-picker'; // Import image picker
 import { useToast } from 'react-native-toast-notifications';
-import styles from '../styles/SummaryScreenStyles'; // Import styles
+import styles from '../styles/SummaryScreenStyles';
 
 export default function SummaryScreen() {
   const [inputContent, setInputContent] = useState('');
   const [summary, setSummary] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('text');
+  const [selectedImage, setSelectedImage] = useState(null); // Store selected image
   const toast = useToast();
 
   const handleSummarization = async () => {
     setIsLoading(true);
     setTimeout(() => {
       setSummary(
-        `Here's a summary of your ${activeTab === 'text' ? 'text' : 'video'}: ${inputContent.slice(
-          0,
-          100
-        )}...`
+        `Here's a summary of your ${
+          activeTab === 'text' ? 'text' : activeTab === 'video' ? 'video' : 'image'
+        }: ${inputContent.slice(0, 100)}...`
       );
       setIsLoading(false);
       toast.show('Summary Generated', {
@@ -33,6 +35,26 @@ export default function SummaryScreen() {
         description: 'Your content has been successfully summarized.',
       });
     }, 2000);
+  };
+
+  const handleImageSelection = () => {
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+        quality: 1,
+      },
+      (response) => {
+        if (response.didCancel) {
+          toast.show('Image selection canceled', { type: 'warning' });
+        } else if (response.errorMessage) {
+          toast.show(`Error: ${response.errorMessage}`, { type: 'danger' });
+        } else {
+          const uri = response.assets[0].uri;
+          setSelectedImage(uri);
+          toast.show('Image uploaded successfully', { type: 'success' });
+        }
+      }
+    );
   };
 
   return (
@@ -64,30 +86,62 @@ export default function SummaryScreen() {
               Video
             </Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setActiveTab('image')}
+            style={[styles.tab, activeTab === 'image' && styles.activeTab]}
+          >
+            <Text style={[styles.tabText, activeTab === 'image' && styles.activeTabText]}>
+              Image
+            </Text>
+          </TouchableOpacity>
         </View>
 
         {/* Input Area */}
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder={activeTab === 'text' ? 'Type your text here...' : 'Enter video URL'}
-            value={inputContent}
-            onChangeText={setInputContent}
-            multiline={activeTab === 'text'}
-          />
-        </View>
+        {activeTab === 'image' ? (
+          <View style={styles.imageContainer}>
+            {selectedImage ? (
+              <Image source={{ uri: selectedImage }} style={styles.imagePreview} />
+            ) : (
+              <View style={styles.imagePlaceholder}>
+                <Text style={styles.imagePlaceholderText}>No image selected</Text>
+              </View>
+            )}
+            <TouchableOpacity style={styles.imageButton} onPress={handleImageSelection}>
+              <Text style={styles.imageButtonText}>Upload Image</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder={
+                activeTab === 'text' ? 'Type your text here...' : 'Enter video URL'
+              }
+              value={inputContent}
+              onChangeText={setInputContent}
+              multiline={activeTab === 'text'}
+            />
+          </View>
+        )}
 
         {/* Action Button */}
         <TouchableOpacity
-          style={[styles.actionButton, !inputContent && styles.disabledButton]}
+          style={[
+            styles.actionButton,
+            !inputContent && activeTab !== 'image' && styles.disabledButton,
+          ]}
           onPress={handleSummarization}
-          disabled={!inputContent || isLoading}
+          disabled={(!inputContent && activeTab !== 'image') || isLoading}
         >
           {isLoading ? (
             <ActivityIndicator color="#fff" />
           ) : (
             <Text style={styles.buttonText}>
-              {activeTab === 'text' ? 'Summarize Text' : 'Summarize Video'}
+              {activeTab === 'text'
+                ? 'Summarize Text'
+                : activeTab === 'video'
+                ? 'Summarize Video'
+                : 'Upload Image'}
             </Text>
           )}
         </TouchableOpacity>

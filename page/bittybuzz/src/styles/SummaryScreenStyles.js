@@ -95,6 +95,40 @@ const SummaryScreenStyles = StyleSheet.create({
     fontSize: 16,
     color: '#333',
   },
+  imageContainer: {
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  imagePreview: {
+    width: 200,
+    height: 200,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  imagePlaceholder: {
+    width: 200,
+    height: 200,
+    backgroundColor: '#ddd',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  imagePlaceholderText: {
+    color: '#888',
+    fontSize: 16,
+  },
+  imageButton: {
+    backgroundColor: '#4a90e2',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+  },
+  imageButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
 });
 
 export default SummaryScreenStyles;
