@@ -37,9 +37,9 @@ export default function MainScreen() {
   const handleReadMore = (news) => {
     navigation.navigate('NewsDetail', {
       title: news.title,
-      image: news.imageUrl, // Assuming image URL is available here
+      image: news.imageUrl,
       description: news.description,
-      pubDate: news.pubDate, // Pass the publication date if available
+      pubDate: news.pubDate,
       content: news.content
     });
   };
@@ -53,6 +53,7 @@ export default function MainScreen() {
           <Image source={require('../assets/icons/camera.png')} style={styles.icon} />
           <Image source={require('../assets/icons/microphone.png')} style={styles.icon} />
         </View>
+        <Image source={require('../assets/images/cloud.png')}/>
         <Text style={styles.welcomeText}>안녕하세요, 윤지님</Text>
         <Text style={styles.summaryPrompt}>뉴스 요약기능을 사용해보세요!</Text>
       </View>
