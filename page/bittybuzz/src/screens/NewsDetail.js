@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, Linking, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../styles/NewsDetailStyles';
 
 export default function NewsDetail({ route }) {
   const { title, image, description, category, pubDate, content } = route.params;
   const [relatedArticles, setRelatedArticles] = useState([]);
+  const [summary, setSummary] = useState(null); // 요약 내용 상태 추가
   const navigation = useNavigation();
 
   // Fetch related articles based on the category
@@ -16,12 +17,18 @@ export default function NewsDetail({ route }) {
       .catch(error => console.error('Error fetching related articles:', error));
   }, [category]);
 
-  // Open the original link in the browser
-  const openOriginalLink = () => {
-    if (originallink) {
-      Linking.openURL(originallink).catch((err) =>
-        console.error('Failed to open link:', err)
-      );
+  // 요약하기 버튼 핸들러
+  const handleSummarize = () => {
+    if (content) {
+      // 간단한 요약 로직 (예: 첫 100자만 표시)
+      const summarizedContent = content.length > 100 
+        ? `${content.slice(0, 100)}...`
+        : content;
+
+      setSummary(summarizedContent);
+      Alert.alert('뉴스 요약', summarizedContent); // 요약된 내용 알림 표시
+    } else {
+      Alert.alert('요약 실패', '본문을 불러올 수 없습니다.');
     }
   };
 
@@ -40,6 +47,11 @@ export default function NewsDetail({ route }) {
         </Text>
       </ScrollView>
 
+      {/* 뉴스 요약하기 버튼 */}
+      <TouchableOpacity style={styles.summarizeButton} onPress={handleSummarize}>
+        <Text style={styles.summarizeButtonText}>뉴스 요약하기</Text>
+      </TouchableOpacity>
+
       {/* Separator */}
       <View style={styles.separator} />
 
@@ -53,7 +65,7 @@ export default function NewsDetail({ route }) {
             title: article.title,
             image: article.imageUrl,
             description: article.description,
-            category: category,  // Keep the same category for related articles
+            category: category, // Keep the same category for related articles
             pubDate: article.pubDate,
             content: article.content // Passing content as well
           })}
