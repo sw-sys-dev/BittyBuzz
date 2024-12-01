@@ -14,7 +14,7 @@ export default function MainScreen() {
   const defaultImage = require('../assets/images/instead.jpg'); // 대체 이미지 경로
 
   useEffect(() => {
-    fetch('http://192.168.45.214:3000/search/news')
+    fetch('http://192.0.0.2:3000/search/news')
       .then(response => response.json())
       .then(data => {
         const sortedNews = data.items.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
@@ -26,7 +26,7 @@ export default function MainScreen() {
 
   useEffect(() => {
     setLoadingCategoryNews(true);
-    fetch(`http://192.168.45.214:3000/search/news?query=${selectedCategory}`)
+    fetch(`http://192.0.0.2:3000/search/news?query=${selectedCategory}`)
       .then(response => response.json())
       .then(data => setCategoryNews(data.items))
       .catch(error => console.error('Error fetching category news:', error))
@@ -56,7 +56,7 @@ export default function MainScreen() {
           <Image source={require('../assets/icons/camera.png')} style={styles.icon} />
           <Image source={require('../assets/icons/microphone.png')} style={styles.icon} />
         </View>
-        <Text style={styles.welcomeText}>안녕하세요, 윤지님</Text>
+        <Text style={styles.welcomeText}>안녕하세요, 관리자님</Text>
         <Text style={styles.summaryPrompt}>뉴스 요약기능을 사용해보세요!</Text>
       </View>
 
