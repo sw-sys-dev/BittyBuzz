@@ -56,7 +56,8 @@ export default function MainScreen() {
           <Image source={require('../assets/icons/camera.png')} style={styles.icon} />
           <Image source={require('../assets/icons/microphone.png')} style={styles.icon} />
         </View>
-        <Text style={styles.welcomeText}>안녕하세요, 관리자님</Text>
+        <Image source={require('../assets/images/cloud.png')}/>
+        <Text style={styles.welcomeText}>안녕하세요, 윤지님</Text>
         <Text style={styles.summaryPrompt}>뉴스 요약기능을 사용해보세요!</Text>
       </View>
 
