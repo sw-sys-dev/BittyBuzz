@@ -24,6 +24,7 @@ const ProfileScreen = () => {
       <View style={styles.menuSection}>
         <TouchableOpacity><Text style={styles.menuText}>Home</Text></TouchableOpacity>
         <TouchableOpacity><Text style={styles.menuText}>Profile</Text></TouchableOpacity>
+        <TouchableOpacity><Text style={styles.menuText}>Scrap</Text></TouchableOpacity>
         <TouchableOpacity><Text style={styles.menuText}>Settings</Text></TouchableOpacity>
         <TouchableOpacity><Text style={styles.menuText}>Help</Text></TouchableOpacity>
         <TouchableOpacity><Text style={styles.menuText}>Logout</Text></TouchableOpacity>

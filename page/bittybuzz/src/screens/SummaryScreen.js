@@ -39,6 +39,7 @@ export default function SummaryScreen() {
       });
     }, 2000);
   };
+  
 
   const handleImageSelection = () => {
     launchImageLibrary(

@@ -18,13 +18,13 @@ export default function BottomTabNavigator() {
           let iconName;
 
           if (route.name === 'Main') {
-            iconName = require('../assets/icons/home-butt.png');
+            iconName = require('../assets/icons/news-butt.png');
           } else if (route.name === 'Summary') {
             iconName = require('../assets/icons/summary-butt.png');
           } else if (route.name === 'Profile') {
             iconName = require('../assets/icons/profile-butt.png');
-          } else if (route.name === 'NewsDetail') {
-            iconName = require('../assets/icons/news-butt.png');
+          } else if (route.name === 'Vote') {
+            iconName = require('../assets/icons/positive-vote.png');
           }
 
           return <Image source={iconName} style={{ width: size, height: size }} />;
@@ -33,7 +33,7 @@ export default function BottomTabNavigator() {
     >
       <Tab.Screen name="Main" component={MainScreen} />
       <Tab.Screen name="Summary" component={SummaryScreen} />
-      <Tab.Screen name="NewsDetail" component={NewsDetail} />
+      <Tab.Screen name="Vote" component={NewsDetail} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );

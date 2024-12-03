@@ -9,6 +9,7 @@ export default StyleSheet.create({
     width: '100%',
     height: 200,
     borderRadius: 10,
+    resizeMode: 'cover', // 추가
   },
   metaContainer: {
     flexDirection: 'row',
@@ -43,17 +44,33 @@ export default StyleSheet.create({
     marginBottom: 8,
   },
   relatedCard: {
+    flexDirection: 'row',
     padding: 8,
     borderBottomWidth: 1,
     borderBottomColor: '#e0e0e0',
   },
+  relatedImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 8,
+    marginRight: 16,
+  },
   relatedTitleText: {
     fontSize: 16,
     fontWeight: 'bold',
+    marginBottom: 4,
+    flex: 1, // 추가: 남은 공간 채우기
+    flexWrap: 'wrap', // 텍스트 줄바꿈
   },
   relatedDescription: {
     fontSize: 14,
     color: '#666',
+  },
+  noArticlesText: {
+    fontSize: 16,
+    color: '#999',
+    textAlign: 'center',
+    marginTop: 20,
   },
   linkButton: {
     backgroundColor: '#0174DF',
@@ -75,9 +92,22 @@ export default StyleSheet.create({
     marginVertical: 10,
     alignItems: 'center',
   },
+  summarizeButtonHover: {
+    backgroundColor: '#45a049',
+  },
   summarizeButtonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  relatedContainer: {
+    flexDirection: 'column',
+    marginVertical: 8,
+  },
+  scrollView: {
+    paddingBottom: 16,
+  },
+  relatedCardHover: {
+    backgroundColor: '#f5f5f5', // 터치 시 배경 변경
   },
 });
