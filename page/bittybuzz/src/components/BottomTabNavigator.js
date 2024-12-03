@@ -4,7 +4,7 @@ import { Image } from 'react-native'; // Image 컴포넌트 임포트
 import MainScreen from '../screens/MainScreen';
 import SummaryScreen from '../screens/SummaryScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import NewsDetail from '../screens/NewsDetail';
+import VoteListScreen from '../screens/VoteListScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -33,7 +33,7 @@ export default function BottomTabNavigator() {
     >
       <Tab.Screen name="Main" component={MainScreen} />
       <Tab.Screen name="Summary" component={SummaryScreen} />
-      <Tab.Screen name="Vote" component={NewsDetail} />
+      <Tab.Screen name="Vote" component={VoteListScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );

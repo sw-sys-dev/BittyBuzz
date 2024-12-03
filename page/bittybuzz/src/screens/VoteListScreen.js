@@ -9,6 +9,7 @@ const topics = [
 
 export default function VoteListScreen({ navigation }) {
   const handlePress = (topic) => {
+    // 'Vote'라는 이름으로 정의된 Stack.Screen으로 이동
     navigation.navigate('Vote', { topic });
   };
 

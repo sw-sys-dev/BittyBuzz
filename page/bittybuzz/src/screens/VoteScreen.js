@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 export default function VoteScreen({ route }) {
-  const { topic } = route.params;
+  const { topic } = route.params; // 전달받은 topic 데이터
   const [selectedOption, setSelectedOption] = useState(null);
 
-  const options = ['옵션 1', '옵션 2', '옵션 3'];
+  const options = ['Option 1', 'Option 2', 'Option 3'];
 
   const handleVote = (option) => {
     setSelectedOption(option);
