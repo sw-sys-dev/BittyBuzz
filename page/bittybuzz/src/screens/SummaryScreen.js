@@ -9,19 +9,27 @@ import {
   ImageBackground,
   Image,
 } from 'react-native';
-import { launchImageLibrary } from 'react-native-image-picker'; // 갤러리 접근을 위한 라이브러리
-import { useToast } from 'react-native-toast-notifications'; // Toast 알림
-import styles from '../styles/SummaryScreenStyles'; // 스타일 import
+import { launchImageLibrary } from 'react-native-image-picker';
+import { useToast } from 'react-native-toast-notifications';
+import styles from '../styles/SummaryScreenStyles';
 
 export default function SummaryScreen() {
+  const [isPremium, setIsPremium] = useState(false); // 프리미엄 활성화 상태
   const [inputContent, setInputContent] = useState('');
   const [summary, setSummary] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('text');
-  const [selectedImage, setSelectedImage] = useState(null); // 선택한 이미지 상태
+  const [selectedImage, setSelectedImage] = useState(null);
   const toast = useToast();
 
   const handleSummarization = async () => {
+    if (!isPremium) {
+      toast.show('This feature is available for premium users only.', {
+        type: 'warning',
+      });
+      return;
+    }
+
     setIsLoading(true);
     setTimeout(() => {
       const generatedSummary =
@@ -39,13 +47,12 @@ export default function SummaryScreen() {
       });
     }, 2000);
   };
-  
 
   const handleImageSelection = () => {
     launchImageLibrary(
       {
-        mediaType: 'photo', // 사진만 선택 가능
-        quality: 1, // 고화질
+        mediaType: 'photo',
+        quality: 1,
       },
       (response) => {
         if (response.didCancel) {
@@ -53,11 +60,19 @@ export default function SummaryScreen() {
         } else if (response.errorMessage) {
           toast.show(`Error: ${response.errorMessage}`, { type: 'danger' });
         } else if (response.assets && response.assets.length > 0) {
-          const uri = response.assets[0].uri; // 이미지 URI 가져오기
+          const uri = response.assets[0].uri;
           setSelectedImage(uri);
           toast.show('Image uploaded successfully', { type: 'success' });
         }
       }
+    );
+  };
+
+  const togglePremium = () => {
+    setIsPremium(!isPremium);
+    toast.show(
+      isPremium ? 'Premium Disabled' : 'Premium Enabled',
+      { type: isPremium ? 'warning' : 'success' }
     );
   };
 
@@ -72,13 +87,25 @@ export default function SummaryScreen() {
           <Text style={styles.title}>Get the news at a glance!</Text>
         </View>
 
+        {/* Premium Toggle Button */}
+        <TouchableOpacity
+          style={[styles.premiumButton, isPremium && styles.premiumActive]}
+          onPress={togglePremium}
+        >
+          <Text style={styles.premiumButtonText}>
+            {isPremium ? 'Disable Premium' : 'Enable Premium'}
+          </Text>
+        </TouchableOpacity>
+
         {/* Tabs */}
         <View style={styles.tabs}>
           <TouchableOpacity
             onPress={() => setActiveTab('text')}
             style={[styles.tab, activeTab === 'text' && styles.activeTab]}
           >
-            <Text style={[styles.tabText, activeTab === 'text' && styles.activeTabText]}>
+            <Text
+              style={[styles.tabText, activeTab === 'text' && styles.activeTabText]}
+            >
               Text
             </Text>
           </TouchableOpacity>
@@ -86,7 +113,9 @@ export default function SummaryScreen() {
             onPress={() => setActiveTab('video')}
             style={[styles.tab, activeTab === 'video' && styles.activeTab]}
           >
-            <Text style={[styles.tabText, activeTab === 'video' && styles.activeTabText]}>
+            <Text
+              style={[styles.tabText, activeTab === 'video' && styles.activeTabText]}
+            >
               Video
             </Text>
           </TouchableOpacity>
@@ -94,7 +123,9 @@ export default function SummaryScreen() {
             onPress={() => setActiveTab('image')}
             style={[styles.tab, activeTab === 'image' && styles.activeTab]}
           >
-            <Text style={[styles.tabText, activeTab === 'image' && styles.activeTabText]}>
+            <Text
+              style={[styles.tabText, activeTab === 'image' && styles.activeTabText]}
+            >
               Image
             </Text>
           </TouchableOpacity>
@@ -132,10 +163,13 @@ export default function SummaryScreen() {
         <TouchableOpacity
           style={[
             styles.actionButton,
-            !inputContent && activeTab !== 'image' && styles.disabledButton,
+            (!inputContent && activeTab !== 'image' && styles.disabledButton) ||
+              (!isPremium && styles.disabledButton),
           ]}
           onPress={handleSummarization}
-          disabled={(!inputContent && activeTab !== 'image') || isLoading}
+          disabled={
+            (!inputContent && activeTab !== 'image') || isLoading || !isPremium
+          }
         >
           {isLoading ? (
             <ActivityIndicator color="#fff" />
