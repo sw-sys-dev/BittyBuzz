@@ -32,12 +32,24 @@ export default function SummaryScreen() {
 
     setIsLoading(true);
     setTimeout(() => {
-      const generatedSummary =
-        activeTab === 'text'
-          ? `Text Summary: ${inputContent.slice(0, 100)}...`
-          : activeTab === 'video'
-          ? 'Video Summary: This is a placeholder for video summary...'
-          : 'Image Summary: This is a placeholder for image summary...';
+      let generatedSummary = '';
+
+      switch (activeTab) {
+        case 'text':
+          generatedSummary =
+            '목요일(5일)은 전국이 가끔 구름 많다가 중부지방과 전북은 밤부터 흐려지며 일부 지역에 비 또는 눈이 내릴 전망이다. 예상 강수량은 대부분 지역에서 5㎜ 안팎, 적설량은 강원 영서 남부·제주도 산지에서 1∼3㎝로 예측된다. 아침 최저기온은 -5∼6도, 낮 최고기온은 5∼12도로 춥겠고, 미세먼지 농도는 \'좋음\'∼\'보통\' 수준이다. 바다 물결은 동해 최대 4.0m로 높게 일 것으로 보인다.';
+          break;
+        case 'image':
+          generatedSummary =
+            '전북 현대 김두현 감독이 위염으로 입원 후 퇴원했다. 전북은 올 시즌 부진으로 10위로 마감하며 승강 플레이오프에 진출, K리그2 서울 이랜드와 경합 중이다. 1차전 원정에서 2-1로 승리했으나 2차전에서 패하면 창단 첫 강등 위기에 처한다.';
+          break;
+        case 'video':
+          generatedSummary =
+            '동영상은 로봇 기술을 이용해 암환자의 머리를 기증자 몸에 이식하는 시뮬레이션 과정을 다룬 내용이다. 이는 의료계와 대중에게 큰 충격을 주며 현실성과 윤리적 논란을 불러일으켰다. 해당 기술의 가능성과 문제점에 대한 의견이 다양하게 제기되고 있다.';
+          break;
+        default:
+          generatedSummary = 'No summary available.';
+      }
 
       setSummary(generatedSummary);
       setIsLoading(false);
@@ -82,12 +94,10 @@ export default function SummaryScreen() {
       style={styles.backgroundImage}
     >
       <ScrollView contentContainerStyle={styles.container}>
-        {/* Title Section */}
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Get the news at a glance!</Text>
         </View>
 
-        {/* Premium Toggle Button */}
         <TouchableOpacity
           style={[styles.premiumButton, isPremium && styles.premiumActive]}
           onPress={togglePremium}
@@ -97,15 +107,12 @@ export default function SummaryScreen() {
           </Text>
         </TouchableOpacity>
 
-        {/* Tabs */}
         <View style={styles.tabs}>
           <TouchableOpacity
             onPress={() => setActiveTab('text')}
             style={[styles.tab, activeTab === 'text' && styles.activeTab]}
           >
-            <Text
-              style={[styles.tabText, activeTab === 'text' && styles.activeTabText]}
-            >
+            <Text style={[styles.tabText, activeTab === 'text' && styles.activeTabText]}>
               Text
             </Text>
           </TouchableOpacity>
@@ -113,9 +120,7 @@ export default function SummaryScreen() {
             onPress={() => setActiveTab('video')}
             style={[styles.tab, activeTab === 'video' && styles.activeTab]}
           >
-            <Text
-              style={[styles.tabText, activeTab === 'video' && styles.activeTabText]}
-            >
+            <Text style={[styles.tabText, activeTab === 'video' && styles.activeTabText]}>
               Video
             </Text>
           </TouchableOpacity>
@@ -123,15 +128,12 @@ export default function SummaryScreen() {
             onPress={() => setActiveTab('image')}
             style={[styles.tab, activeTab === 'image' && styles.activeTab]}
           >
-            <Text
-              style={[styles.tabText, activeTab === 'image' && styles.activeTabText]}
-            >
+            <Text style={[styles.tabText, activeTab === 'image' && styles.activeTabText]}>
               Image
             </Text>
           </TouchableOpacity>
         </View>
 
-        {/* Input Area */}
         {activeTab === 'image' ? (
           <View style={styles.imageContainer}>
             {selectedImage ? (
@@ -159,7 +161,6 @@ export default function SummaryScreen() {
           </View>
         )}
 
-        {/* Action Button */}
         <TouchableOpacity
           style={[
             styles.actionButton,
@@ -184,7 +185,6 @@ export default function SummaryScreen() {
           )}
         </TouchableOpacity>
 
-        {/* Summary Result */}
         {summary ? (
           <View style={styles.summaryContainer}>
             <Text style={styles.summaryTitle}>Your Summary</Text>
