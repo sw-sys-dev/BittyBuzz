@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, Switch, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../styles/globalStyles';
 
 export default function MainScreen() {
   const [selectedCategory, setSelectedCategory] = useState('정치');
-  const navigation = useNavigation();
+  const [isPremium, setIsPremium] = useState(false); // 프리미엄 기능 상태
+  const navigation = useNavigation();;
   const defaultImage = require('../assets/images/instead.jpg'); // 대체 이미지 경로
 
   const categories = ['정치', '시사', '경제', '스포츠', '기술', '건강'];
@@ -208,26 +209,40 @@ export default function MainScreen() {
       },
     ],
     // 다른 카테고리 추가 가능
-  };const handleReadMore = (news) => {
+  };
+  const handleReadMore = (news, isRecommend = false) => {
+    if (isRecommend && !isPremium) {
+      Alert.alert('프리미엄 기능', 'Recommend News는 프리미엄 사용자만 이용할 수 있습니다.');
+      return;
+    }
     navigation.navigate('NewsDetail', {
       title: news.title,
       image: news.imageUrl || defaultImage,
       description: news.description,
-      category: selectedCategory, // 선택된 카테고리 전달
+      category: selectedCategory,
       pubDate: news.pubDate,
       content: news.content,
     });
-  };  
-
+  };
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
+        {/* 프리미엄 기능 토글 */}
+        <View style={styles.premiumToggle}>
+          <Text style={styles.welcomeText}>Premium</Text>
+          <Switch
+            value={isPremium}
+            onValueChange={setIsPremium}
+            thumbColor={isPremium ? '#0174DF' : '#f4f3f4'}
+            trackColor={{ false: '#767577', true: '#81b0ff' }}
+          />
+        </View>
         <Text style={styles.title}>Bitty Buzz</Text>
         <Text style={styles.welcomeText}>안녕하세요, 윤지님</Text>
         <Text style={styles.summaryPrompt}>뉴스 요약기능을 사용해보세요!</Text>
       </View>
 
-      {/* Recent News */}
+      {/* 추천 뉴스 */}
       <Text style={[styles.content, { fontWeight: 'bold' }]}>Recommend News</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
         {recentNews.map((news, index) => (
@@ -235,14 +250,14 @@ export default function MainScreen() {
             <Image source={news.imageUrl} style={styles.cardImage} />
             <Text style={styles.cardTitle}>{news.title}</Text>
             <Text style={styles.cardDescription}>{news.description}</Text>
-            <TouchableOpacity onPress={() => handleReadMore(news)}>
+            <TouchableOpacity onPress={() => handleReadMore(news, true)}>
               <Text style={styles.cardAction}>Start reading →</Text>
             </TouchableOpacity>
           </View>
         ))}
       </ScrollView>
 
-      {/* News Categories */}
+      {/* 뉴스 카테고리 */}
       <Text style={[styles.content, { fontWeight: 'bold' }]}>Categories</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScrollView}>
         {categories.map((category) => (
@@ -266,7 +281,7 @@ export default function MainScreen() {
         ))}
       </ScrollView>
 
-      {/* Category News */}
+      {/* 선택된 카테고리 뉴스 */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
         {categoryNews[selectedCategory]?.map((news, index) => (
           <View key={index} style={styles.card}>
