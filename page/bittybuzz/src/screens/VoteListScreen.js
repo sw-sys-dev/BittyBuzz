@@ -1,16 +1,18 @@
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const topics = [
-  { id: '1', title: 'React Native를 사용하는 이유' },
-  { id: '2', title: '좋아하는 프로그래밍 언어' },
-  { id: '3', title: '가장 선호하는 데이터베이스' },
-];
+export default function VoteListScreen() {
+  const navigation = useNavigation();
 
-export default function VoteListScreen({ navigation }) {
+  const topics = [
+    { id: '1', title: 'React Native를 사용하는 이유' },
+    { id: '2', title: '좋아하는 프로그래밍 언어' },
+    { id: '3', title: '가장 선호하는 데이터베이스' },
+  ];
+
   const handlePress = (topic) => {
-    // 'Vote'라는 이름으로 정의된 Stack.Screen으로 이동
-    navigation.navigate('Vote', { topic });
+    navigation.navigate('Vote', { topic }); // 'Vote'로 이동
   };
 
   return (
@@ -49,4 +51,4 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#333',
   },
-});
+})

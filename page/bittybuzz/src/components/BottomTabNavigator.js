@@ -5,7 +5,7 @@ import MainScreen from '../screens/MainScreen';
 import SummaryScreen from '../screens/SummaryScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import VoteListScreen from '../screens/VoteListScreen';
-
+import PollSalesScreen from '../screens/PollSalesScreen'; 
 const Tab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
@@ -26,7 +26,9 @@ export default function BottomTabNavigator() {
           } else if (route.name === 'Vote') {
             iconName = require('../assets/icons/positive-vote.png');
           }
-
+            else if (route.name === 'PollSales') {
+              iconName = require('../assets/icons/data-search.png');
+          }
           return <Image source={iconName} style={{ width: size, height: size }} />;
         },
       })}
@@ -34,6 +36,7 @@ export default function BottomTabNavigator() {
       <Tab.Screen name="Main" component={MainScreen} />
       <Tab.Screen name="Summary" component={SummaryScreen} />
       <Tab.Screen name="Vote" component={VoteListScreen} />
+      <Tab.Screen name="PollSales" component={PollSalesScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
