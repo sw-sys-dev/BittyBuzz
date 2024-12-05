@@ -26,7 +26,9 @@ export default function BottomTabNavigator() {
           } else if (route.name === 'Vote') {
             iconName = require('../assets/icons/positive-vote.png');
           }
-
+            else if (route.name === 'PollSales') {
+              iconName = require('../assets/icons/data-search.png');
+          }
           return <Image source={iconName} style={{ width: size, height: size }} />;
         },
       })}
