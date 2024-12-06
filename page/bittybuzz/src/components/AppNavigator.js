@@ -24,7 +24,7 @@ export default function AppNavigator() {
       />
       <Stack.Screen name="NewsDetail" component={NewsDetail} options={{ title: 'News Detail' }} />
       <Stack.Screen name="VoteList" component={VoteListScreen} options={{ title: 'Vote Topics' }} />
-      <Stack.Screen name="Vote" component={VoteScreen} options={{ title: 'Vote' }} />
+      <Stack.Screen name="VoteDetail" component={VoteScreen} options={{ title: 'Vote Screen' }} />
     </Stack.Navigator>
   );
 }
