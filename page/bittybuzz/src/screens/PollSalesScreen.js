@@ -14,11 +14,21 @@ export default function PollSalesScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('전체');
+  const [purchasedItems, setPurchasedItems] = useState([]);
 
   const categories = ['전체', '정치', '경제', '스포츠', '기술', '건강'];
 
   const allPollItems = [
-    { id: '14', category: '정치', title: '정당 지지율 조사', description: '정당 지지율 조사', price: '60,000원', image: require('../assets/images/politics.png'), color: '#ECF2FF' },
+    {
+      id: '14',
+      category: '정치',
+      title: '정당 지지율 조사',
+      description: '정당별 지지율에 대한 상세 데이터입니다.',
+      price: '60,000원',
+      image: require('../assets/images/politics.png'),
+      color: '#ECF2FF',
+      details: '민주당: 60%\n국민의힘: 25%\n조국혁신당: 10%\n기타: 22%',
+    },
     { id: '3', category: '경제', title: '소비자 신뢰도 조사', description: '소비자 신뢰 지수 조사', price: '55,000원', image: require('../assets/images/economy.png'), color: '#E3DFFD' },
     { id: '6', category: '스포츠', title: '스포츠 팬 선호도', description: '스포츠 팀 및 선수 인기 조사', price: '40,000원', image: require('../assets/images/sports.png'), color: '#FFF4D2' },
     { id: '10', category: '정치', title: '선거 공약 신뢰도 조사', description: '공약 신뢰도 평가', price: '50,000원', image: require('../assets/images/politics.png'), color: '#ECF2FF' },
@@ -45,14 +55,23 @@ export default function PollSalesScreen({ navigation }) {
       ? allPollItems
       : allPollItems.filter((item) => item.category === selectedCategory);
 
-  const handlePurchase = (item) => {
-    setSelectedItem(item);
-    setModalVisible(true);
+  const handleItemPress = (item) => {
+    if (purchasedItems.includes(item.id)) {
+      // 이미 구매한 항목인 경우 상세 내용을 표시
+      alert(`상세 내용:\n${item.details}`);
+    } else {
+      // 구매하지 않은 항목은 구매 모달을 표시
+      setSelectedItem(item);
+      setModalVisible(true);
+    }
   };
 
   const confirmPurchase = () => {
-    alert(`${selectedItem.title} 데이터를 구매하셨습니다!`);
-    setModalVisible(false);
+    if (selectedItem) {
+      setPurchasedItems([...purchasedItems, selectedItem.id]);
+      alert(`${selectedItem.title} 데이터를 구매하셨습니다!`);
+      setModalVisible(false);
+    }
   };
 
   const renderCategory = ({ item }) => (
@@ -76,14 +95,20 @@ export default function PollSalesScreen({ navigation }) {
 
   const renderPollItem = ({ item }) => (
     <TouchableOpacity
-      style={styles.pollItem}
-      onPress={() => handlePurchase(item)}
+      style={[
+        styles.pollItem,
+        purchasedItems.includes(item.id) && styles.purchasedPollItem,
+      ]}
+      onPress={() => handleItemPress(item)}
     >
       <Image source={item.image} style={styles.pollImage} />
       <View style={styles.pollTextContainer}>
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.description}>{item.description}</Text>
         <Text style={styles.price}>{item.price}</Text>
+        {purchasedItems.includes(item.id) && (
+          <Text style={styles.purchasedTag}>구매 완료</Text>
+        )}
       </View>
     </TouchableOpacity>
   );
@@ -159,11 +184,11 @@ const styles = StyleSheet.create({
   },
   categoryButton: {
     paddingVertical: 10,
-    paddingHorizontal: 15,  
+    paddingHorizontal: 15,
     backgroundColor: '#ddd',
     borderRadius: 20,
     marginRight: 10,
-    height:40
+    height: 40,
   },
   categoryButtonSelected: {
     backgroundColor: '#3498db',
@@ -264,5 +289,16 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  purchasedPollItem: {
+    borderColor: '#2ecc71',
+    borderWidth: 2,
+    backgroundColor: '#eafaf1',
+  },
+  purchasedTag: {
+    marginTop: 5,
+    fontSize: 14,
+    color: '#2ecc71',
+    fontWeight: 'bold',
   },
 });
