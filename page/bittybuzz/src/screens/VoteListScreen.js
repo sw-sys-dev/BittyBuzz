@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Image, TextInput } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Image, TextInput, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import styles from '../styles/VoteListScreenStyles';
 
 export default function VoteListScreen() {
   const navigation = useNavigation();
@@ -127,7 +126,7 @@ export default function VoteListScreen() {
         return '#FFF4D2';
       case '기술':
       default:
-        return '#D3F2E3'; // 기술 또는 기타 카테고리 색상
+        return '#D3F2E3';
     }
   };
 
@@ -140,14 +139,13 @@ export default function VoteListScreen() {
     });
 
   const handlePress = (topic) => {
-    navigation.navigate('VoteDetail', { topic }); // topic 전체 전달
+    navigation.navigate('VoteDetail', { topic });
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>Vote on a Topic</Text>
 
-      {/* 검색 바 */}
       <TextInput
         style={styles.searchBar}
         placeholder="Search topics..."
@@ -155,23 +153,21 @@ export default function VoteListScreen() {
         onChangeText={setSearchQuery}
       />
 
-      {/* 정렬 옵션 */}
       <View style={styles.sortContainer}>
         <TouchableOpacity
           style={[styles.sortButton, sortOption === 'newest' && styles.activeSort]}
           onPress={() => setSortOption('newest')}
         >
-          <Text style={styles.sortText}>최신순</Text>
+          <Text style={[styles.sortText, sortOption === 'newest' && styles.activeSortText]}>최신순</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.sortButton, sortOption === 'popular' && styles.activeSort]}
           onPress={() => setSortOption('popular')}
         >
-          <Text style={styles.sortText}>진행률순</Text>
+          <Text style={[styles.sortText, sortOption === 'popular' && styles.activeSortText]}>진행률순</Text>
         </TouchableOpacity>
       </View>
 
-      {/* 투표 리스트 */}
       <FlatList
         data={filteredTopics}
         keyExtractor={(item) => item.id}
@@ -185,11 +181,20 @@ export default function VoteListScreen() {
           >
             <Image source={item.icon} style={styles.largeIcon} />
             <View style={styles.topicContent}>
-              <Text style={styles.categoryText}>{item.category}</Text> {/* 카테고리 표시 */}
+              <Text style={styles.categoryText}>{item.category}</Text>
               <Text style={styles.topicText}>{item.title}</Text>
               <Text style={styles.topicStatus}>{item.status}</Text>
               <View style={styles.progressBar}>
-                <View style={[styles.progressFill, { width: `${item.progress}%` }]} />
+                <View
+                  style={[
+                    styles.progressFill,
+                    {
+                      width: `${item.progress}%`,
+                      backgroundColor:
+                        item.progress > 80 ? 'green' : item.progress > 50 ? 'orange' : 'red',
+                    },
+                  ]}
+                />
               </View>
             </View>
           </TouchableOpacity>
@@ -198,3 +203,115 @@ export default function VoteListScreen() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#f0f2f5', // 부드러운 중립색 배경
+  },
+  headerText: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    color: '#2c3e50', // 짙은 네이비 색상
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  searchBar: {
+    height: 45,
+    borderColor: '#dfe6e9',
+    borderWidth: 1,
+    borderRadius: 25,
+    paddingHorizontal: 15,
+    marginBottom: 20,
+    backgroundColor: '#ffffff',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 1 },
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  sortContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 15,
+  },
+  sortButton: {
+    flex: 1,
+    paddingVertical: 10,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#dfe6e9',
+    backgroundColor: '#ffffff',
+    borderRadius: 25,
+    marginHorizontal: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 1 },
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  activeSort: {
+    backgroundColor: '#3498db', // 파란색으로 활성화 상태 표시
+    borderColor: '#3498db',
+  },
+  sortText: {
+    color: '#7f8c8d',
+    fontWeight: '600',
+  },
+  activeSortText: {
+    color: '#ffffff', // 활성화된 버튼 텍스트는 흰색
+  },
+  topicItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 20,
+    marginBottom: 15,
+    backgroundColor: '#ffffff',
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: '#dfe6e9',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  largeIcon: {
+    width: 70,
+    height: 70,
+    borderRadius: 10,
+    marginRight: 15,
+  },
+  topicContent: {
+    flex: 1,
+  },
+  categoryText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#34495e',
+    marginBottom: 5,
+  },
+  topicText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#2c3e50',
+    marginBottom: 8,
+  },
+  topicStatus: {
+    fontSize: 14,
+    color: '#95a5a6',
+    marginBottom: 12,
+  },
+  progressBar: {
+    height: 8,
+    backgroundColor: '#ecf0f1',
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: '100%',
+    backgroundColor: '#2ecc71', // 초록색 진행률 색상
+    borderRadius: 4,
+  },
+});

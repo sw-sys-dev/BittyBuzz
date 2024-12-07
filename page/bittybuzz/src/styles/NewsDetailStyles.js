@@ -134,4 +134,21 @@ export default StyleSheet.create({
     fontWeight: '600',
     color: '#fff',
   },
+  shortStyleCard: {
+    marginVertical: 10,
+    padding: 15,
+    borderRadius: 8,
+    backgroundColor: '#f9f9f9',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  relatedDescription: {
+    fontSize: 14,
+    color: '#555',
+    marginVertical: 5,
+  },
+  
 });

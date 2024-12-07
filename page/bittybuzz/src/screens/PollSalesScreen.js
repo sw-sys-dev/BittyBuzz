@@ -39,7 +39,6 @@ export default function PollSalesScreen({ navigation }) {
     { id: '5', category: '정치', title: '지방 자치 선호도 조사', description: '지역별 선호도 조사', price: '40,000원', image: require('../assets/images/politics.png'), color: '#ECF2FF' },
     { id: '25', category: '경제', title: '소매업체 선호도 조사', description: '소비자 소매점 선호 분석', price: '45,000원', image: require('../assets/images/economy.png'), color: '#E3DFFD' },
   ];
-  
 
   const filteredPollItems =
     selectedCategory === '전체'
@@ -77,12 +76,10 @@ export default function PollSalesScreen({ navigation }) {
 
   const renderPollItem = ({ item }) => (
     <TouchableOpacity
-      style={[styles.pollItem, { backgroundColor: item.color }]}
+      style={styles.pollItem}
       onPress={() => handlePurchase(item)}
     >
-      <View style={styles.imageContainer}>
-        <Image source={item.image} style={styles.pollImage} />
-      </View>
+      <Image source={item.image} style={styles.pollImage} />
       <View style={styles.pollTextContainer}>
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.description}>{item.description}</Text>
@@ -93,7 +90,7 @@ export default function PollSalesScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>여론조사 데이터 판매</Text>
+      <Text style={styles.header}>데이터 마켓</Text>
       <FlatList
         data={categories}
         renderItem={renderCategory}
@@ -148,7 +145,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#f4f4f4',
+    backgroundColor: '#f9f9fb',
   },
   header: {
     fontSize: 24,
@@ -169,11 +166,11 @@ const styles = StyleSheet.create({
     height:40
   },
   categoryButtonSelected: {
-    backgroundColor: '#ff6b6b',
+    backgroundColor: '#3498db',
   },
   categoryText: {
     fontSize: 14,
-    color: '#333',
+    color: '#2c3e50',
   },
   categoryTextSelected: {
     color: '#fff',
@@ -183,44 +180,40 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   pollItem: {
-    borderRadius: 20,
-    padding: 15,
-    marginBottom: 15,
     flexDirection: 'row',
-    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 15,
+    padding: 10,
+    marginBottom: 15,
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 2 },
-  },
-  imageContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 15,
+    shadowRadius: 5,
+    elevation: 3,
   },
   pollImage: {
-    width: 50,
-    height: 50,
+    width: 80,
+    height: 80,
+    borderRadius: 10,
+    marginRight: 15,
   },
   pollTextContainer: {
     flex: 1,
+    justifyContent: 'center',
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#34495e',
   },
   description: {
     fontSize: 14,
-    color: '#666',
+    color: '#7f8c8d',
     marginVertical: 5,
   },
   price: {
     fontSize: 16,
-    color: '#ff6b6b',
+    color: '#e74c3c',
     fontWeight: 'bold',
   },
   centeredView: {
@@ -230,11 +223,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalView: {
-    margin: 20,
+    width: '80%',
     backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
+    borderRadius: 15,
+    padding: 20,
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
     elevation: 5,
   },
   modalTitle: {
@@ -243,25 +240,25 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
+    fontSize: 16,
+    marginBottom: 10,
+    color: '#2c3e50',
   },
   modalButtons: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
+    marginTop: 20,
   },
   button: {
-    borderRadius: 20,
+    borderRadius: 10,
     padding: 10,
+    marginHorizontal: 10,
     elevation: 2,
-    minWidth: 100,
   },
   buttonCancel: {
-    backgroundColor: '#bbb',
+    backgroundColor: '#bdc3c7',
   },
   buttonConfirm: {
-    backgroundColor: '#ff6b6b',
+    backgroundColor: '#3498db',
   },
   textStyle: {
     color: 'white',

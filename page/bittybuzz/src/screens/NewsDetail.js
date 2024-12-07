@@ -18,6 +18,30 @@ export default function NewsDetail({ route }) {
     금융: '요약 정보를 불러올 수 없습니다. 카테고리를 선택해주세요.',
   };
 
+  // 크롤링된 뉴스 본문 추가
+  const otherNews = [
+    {
+      title: "탄핵 부결돼도 “尹, 통치능력 상실”…민주당 “될때까지 탄핵 추진”",
+      content:
+        "윤석열 대통령에 대한 탄핵소추안이 국회에서 부결될 것으로 보인다. 앞서 윤 대통령에 대한 탄핵안을 '통과될 때까지' 추진하겠다고 밝힌 민주당은 매주 탄핵안 표결에 나설 것으로 보인다. 이재명 민주당 대표 역시 '(탄핵안이 가결) 될 때까지 반복적으로 추진할 것'이라고 윤 대통령 탄핵에 대한 강한 의지를 보였다.",
+      pubDate: "2024-12-07",
+      imageUrl: require('../assets/images/scroll3.png'),
+    },
+    {
+      title: "안철수 '국힘 의원들, 당론 있어도 소신에 따라 투표권 행사해야'",
+      content:
+        "국민의힘 의원들이 7일 오후 국회 본회의장에서 세 번째 발의된 김건희 특검법 표결을 마친 뒤 윤석열 대통령 탄핵안에는 표결하지 않겠다며 퇴장했다. 국민의힘 의원 중에서 유일하게 남은 안철수 의원은 표결에 불참한 국민의힘 의원들을 향해 '당론이 있다고 하더라도 자신의 소신에 따라 투표권을 행사해야 한다'고 말했다.",
+      pubDate: "2024-12-07",
+      imageUrl: require('../assets/images/scroll2.png'),
+    },
+    {
+      title: "‘삿대질→투표→퇴장→호소→재입장’…탄핵 표결 ‘스톱’된 본회의장",
+      content:
+        "윤석열 대통령 탄핵소추안 표결이 이뤄진 7일 국회는 분초를 다투는 초긴장과 긴박함으로 가득했다. 윤 대통령의 대국민 사과 담화부터 본회의 표결이 이뤄지기까지 국회는 하루종일 롤러코스터를 탄 듯 어지러운 상황의 연속이었다. 이날 오후 5시 본회의 개의가 다가오면서 긴장감은 최고조에 달했다. 본회의 시작 전 진보당 의원 3명이 단상 앞에 나와 여당 의원들을 향해 “탄핵 부결은 내란 공범”이라는 손팻말을 들었다. 이 과정에서 여야가 서로를 향해 고성과 삿대질을 주고 받으며 신경전을 벌였다.첫번째 안건으로 상정된 ‘김건희 여사 특검법’ 재의표결 과정에서 여야 공방전이 더욱 거칠어졌다. 여당 의원들은 김 여사 특검법 재표결을 마친 뒤 곧장 본회의장 옆문을 통해 퇴장했다. 김 여사 특검법 표결에만 참여한 뒤 윤 대통령 탄핵안 표결에는 불참하자는 당론에 따른 행동이었다. 퇴장하는 여당 의원들은 고개를 푹 숙이거나 얼굴을 가린 채 본회의장을 빠르게 빠져나갔다.",
+      pubDate: "2024-12-07",
+      imageUrl: require('../assets/images/scroll1.png'),
+    },
+  ];
   const hardcodedArticles = {
     정치: [
       {
@@ -120,7 +144,24 @@ export default function NewsDetail({ route }) {
   };
 
   const shouldShowVoteSection = content && content.includes('홍준표');
-
+  const renderOtherNews = () => {
+    return otherNews.map((news, index) => (
+      <TouchableOpacity
+        key={index}
+        onPress={() => navigation.push('NewsDetail', news)}
+        style={styles.shortStyleCard}
+      >
+        <Image source={news.imageUrl} style={styles.image} />
+        <Text style={styles.relatedTitleText}>{news.title}</Text>
+        <Text style={styles.relatedDescription}>
+          {news.content.slice(0, 100)}...
+        </Text>
+        <Text style={styles.date}>
+          {new Date(news.pubDate).toLocaleDateString()}
+        </Text>
+      </TouchableOpacity>
+    ));
+  };
   return (
     <ScrollView style={styles.container}>
       {/* 메인 뉴스 */}
@@ -199,10 +240,17 @@ export default function NewsDetail({ route }) {
               <Text style={styles.relatedTitleText}>{article.title || '제목 없음'}</Text>
             </TouchableOpacity>
           ))}
+          
         </View>
       ) : (
         <Text style={styles.noRelatedText}>관련 기사를 찾을 수 없습니다.</Text>
+        
       )}
+            {/* Other News Section */}
+            <View>
+        <Text style={styles.relatedTitle}>다른 뉴스 보기</Text>
+        {renderOtherNews()}
+      </View>
     </ScrollView>
   );
 }
