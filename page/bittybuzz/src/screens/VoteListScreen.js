@@ -100,6 +100,21 @@ export default function VoteListScreen() {
       category: '기술',
       options: ['긍정적', '부정적', '중립', '효과 없음'],
     },
+    {
+      id: '11',
+      title: '홍준표 대구시장 관련 여론조작 의혹에 대한 입장',
+      category: '정치',
+      icon: require('../assets/images/news1.jpg'),
+      progress: 12,
+      status: '진행 중',
+      options: [
+        '강혜경 씨의 폭로는 공익을 위한 것으로 봐야 한다.',
+        '명태균과 강혜경 씨 모두 여론조작 공범으로 조사해야 한다.',
+        '홍준표 시장의 주장이 신뢰할 수 있다.',
+        '폭로자의 주장이 더 신뢰할 만하다.',
+        '잘 모르겠다.',
+      ],
+    },
   ];
 
   const getCategoryColor = (category) => {

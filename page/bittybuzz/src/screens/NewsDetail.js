@@ -9,6 +9,7 @@ export default function NewsDetail({ route }) {
   const [summary, setSummary] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
+  const [selectedOption, setSelectedOption] = useState(null);
 
   // 하드코딩된 요약 및 관련 기사 데이터
   const hardcodedSummaries = {
@@ -112,6 +113,13 @@ export default function NewsDetail({ route }) {
       Alert.alert('뉴스 요약', summarizedContent);
     }, 3000);
   };
+  
+  const handleVote = (option) => {
+    setSelectedOption(option);
+    Alert.alert('투표 완료', `선택한 옵션: "${option}"`);
+  };
+
+  const shouldShowVoteSection = content && content.includes('홍준표');
 
   return (
     <ScrollView style={styles.container}>
@@ -126,6 +134,33 @@ export default function NewsDetail({ route }) {
       </View>
       <Text style={styles.title}>{title || '제목 없음'}</Text>
       <Text style={styles.content}>{content || '본문을 불러올 수 없습니다.'}</Text>
+
+      {/* 투표 섹션: "홍준표" 키워드가 포함된 경우에만 표시 */}
+      {shouldShowVoteSection && (
+        <View style={styles.voteContainer}>
+          <Text style={styles.voteTitle}>홍준표 대구시장 관련 여론조작 의혹에 대한 입장</Text>
+          <View style={styles.optionsContainer}>
+            {[
+              '강혜경 씨의 폭로는 공익을 위한 것으로 봐야 한다.',
+              '명태균과 강혜경 씨 모두 여론조작 공범으로 조사해야 한다.',
+              '홍준표 시장의 주장이 신뢰할 수 있다.',
+              '폭로자의 주장이 더 신뢰할 만하다.',
+              '잘 모르겠다.',
+            ].map((option, index) => (
+              <TouchableOpacity
+                key={index}
+                style={[
+                  styles.optionButton,
+                  selectedOption === option && styles.selectedOptionButton,
+                ]}
+                onPress={() => handleVote(option)}
+              >
+                <Text style={styles.optionText}>{option}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+      )}
 
       {/* 요약 버튼 */}
       <TouchableOpacity style={styles.summarizeButton} onPress={handleSummarize}>
