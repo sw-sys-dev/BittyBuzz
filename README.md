@@ -1,6 +1,6 @@
 # BittyBuzz 🚀
 
-BittyBuzz는 **Naver Search**와 **Google News** API를 활용해 최신 뉴스를 가져오고, AI 모델을 사용하여 뉴스를 요약 및 분석하는 프로젝트입니다. 
+BittyBuzz는 **Naver Search**와 **Google News** API를 활용해 최신 뉴스를 가져오고, AI 모델을 사용하여 뉴스를 요약 및 분석하는 App Service입니다. 
 
 ## 🔍 주요 기능
 - **뉴스 데이터 수집**:  
