@@ -28,7 +28,7 @@ BittyBuzz는 **Naver Search**와 **Google News** API를 활용해 최신 뉴스�
 
 ### 1️⃣ 프로젝트 클론
 ```bash
-git clone https://github.com/your-username/bittybuzz.git
+git clone https://github.com/sw-sys-dev/BittyBuzz.git
 cd bittybuzz
 2️⃣ 의존성 설치
 npm install
