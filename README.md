@@ -26,17 +26,21 @@ BittyBuzz는 **Naver Search**와 **Google News** API를 활용해 최신 뉴스�
 
 ## 🚀 실행 방법
 
-### 1️⃣ 프로젝트 클론
+### 
 ```bash
+1️⃣ 프로젝트 클론
 git clone https://github.com/sw-sys-dev/BittyBuzz.git
-cd bittybuzz
+cd Bittybuzz
+
 2️⃣ 의존성 설치
 npm install
+
 3️⃣ 프로젝트 실행
 아래 명령어로 Android 환경에서 실행합니다:
 
 cd /page/bittybuzz
 npx react-native start android
+
 📂 프로젝트 구조
 
 bittybuzz/
