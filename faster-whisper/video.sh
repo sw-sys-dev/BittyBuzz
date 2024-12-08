@@ -1,0 +1,1 @@
+python3 transcribe.py --video_url "https://www.youtube.com/watch?v=AtcSGqR4gEM" --output_path "/workspace"
