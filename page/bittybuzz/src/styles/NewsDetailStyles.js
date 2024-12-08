@@ -145,10 +145,33 @@ export default StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
+  // eslint-disable-next-line no-dupe-keys
   relatedDescription: {
     fontSize: 14,
     color: '#555',
     marginVertical: 5,
+  },
+  summaryContainer: {
+    backgroundColor: '#f9f9f9',
+    padding: 16,
+    borderRadius: 8,
+    marginVertical: 16,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  summaryTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    color: '#333',
+  },
+  summaryText: {
+    fontSize: 14,
+    lineHeight: 20,
+    color: '#555',
   },
   
 });

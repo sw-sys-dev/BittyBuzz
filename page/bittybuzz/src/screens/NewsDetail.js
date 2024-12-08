@@ -10,6 +10,7 @@ export default function NewsDetail({ route }) {
   const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
   const [selectedOption, setSelectedOption] = useState(null);
+  const [isSummaryVisible, setIsSummaryVisible] = useState(false); // 요약 내용 표시 상태
 
   // 하드코딩된 요약 및 관련 기사 데이터
   const hardcodedSummaries = {
@@ -129,13 +130,14 @@ export default function NewsDetail({ route }) {
   // 뉴스 요약 기능
   const handleSummarize = () => {
     setIsLoading(true);
+    setIsSummaryVisible(false); // 로딩 중일 때 요약 숨김
 
     setTimeout(() => {
       setIsLoading(false);
       const summarizedContent = hardcodedSummaries[category] || hardcodedSummaries['기타'];
       setSummary(summarizedContent);
-      Alert.alert('뉴스 요약', summarizedContent);
-    }, 3000);
+      setIsSummaryVisible(true); // 요약 표시
+    }, 3000); // 3초 지연 시뮬레이션
   };
   
   const handleVote = (option) => {
@@ -205,8 +207,18 @@ export default function NewsDetail({ route }) {
 
       {/* 요약 버튼 */}
       <TouchableOpacity style={styles.summarizeButton} onPress={handleSummarize}>
-        <Text style={styles.summarizeButtonText}>뉴스 요약하기</Text>
+        <Text style={styles.summarizeButtonText}>
+          {isLoading ? '요약 중...' : '뉴스 요약하기'}
+        </Text>
       </TouchableOpacity>
+
+      {/* 요약 내용 (버튼을 눌렀을 때만 표시) */}
+      {isSummaryVisible && summary && (
+        <View style={styles.summaryContainer}>
+          <Text style={styles.summaryTitle}>요약 내용</Text>
+          <Text style={styles.summaryText}>{summary}</Text>
+        </View>
+      )}
 
       {/* 로딩 화면 */}
       {isLoading && (
